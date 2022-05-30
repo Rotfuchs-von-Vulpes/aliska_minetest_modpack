@@ -1,0 +1,23 @@
+{
+  "name": "texture-maker",
+  "version": "1.0.0",
+  "description": "make item textures",
+  "main": "makeTexture.js",
+  "scripts": {
+    "test": "echo \"we not do it here\"",
+    "start": "node makeTexture.js"
+  },
+  "keywords": [
+    "minetest",
+    "pixel-art",
+    "png"
+  ],
+  "author": "Rotfuchs-von-Vulpes",
+  "license": "MIT",
+  "dependencies": {
+    "fast-png": "^6.1.0",
+    "fs": "0.0.1-security",
+    "readimage": "^1.1.1"
+  },
+  "type": "module"
+}
