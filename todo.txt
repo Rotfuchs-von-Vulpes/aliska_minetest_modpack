@@ -13,3 +13,12 @@ diorite
 andesite
 calcite
 granite
+
+
+
+inputs 1-n
+outputs 1-n
+
+
+
+
