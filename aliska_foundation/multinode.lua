@@ -135,19 +135,22 @@ function aliska.create_multinode(
 		default.get_inventory_drops(pos, "src", drops)
 		default.get_inventory_drops(pos, "fuel", drops)
 		default.get_inventory_drops(pos, "dst", drops)
-		drops[#drops+1] = node.." 27"
 		
 		if not (p1 and p2) then
 			return
 		end
 		
+		local count = 0
 		for i=p1.x, p2.x do
 			for j=p1.y, p2.y do
 				for k=p1.z, p2.z do
 					minetest.set_node({x=i, y=j, z=k}, {name='air'})
+					count = count + 1
 				end
 			end
 		end
+		drops[#drops+1] = node.." "..count
+
 		return drops
 	end
 end

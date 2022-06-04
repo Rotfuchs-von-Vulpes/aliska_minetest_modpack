@@ -77,14 +77,6 @@ local function swap_node(pos, node)
 	end
 end
 
-local coke_oven = {
-	recipes = {},
-	times = {}
-}
-
-coke_oven.recipes['default:coal_lump'] = MOD_NAME..':coke'
-coke_oven.times['default:coal_lump'] = 3
-
 local function can_dig(pos, player)
 	local player_inv = player:get_inventory()
 	local node_inv = minetest.get_meta(
@@ -122,9 +114,6 @@ local function allow_metadata_inventory_put(pos, listname, index, stack)
 
 	if listname == "fuel" then
 		if minetest.get_craft_result({method="fuel", width=1, items={stack}}).time ~= 0 then
-			if inv:is_empty("src") then
-				meta:set_string("infotext", "Coke oven is empty")
-			end
 
 			return stack:get_count()
 		else
@@ -177,7 +166,7 @@ local function coke_oven_node_timer(pos, elapsed)
 			inv:set_list('src', srclist)
 
 			swap_node(pos, MOD_NAME..':coke_furnace_active')
-			infotext = 'Coke oven active\nItem: 0%'
+			infotext = 'Coke oven active\nItem: 0%, Fuel: '..fuel_percent
 			meta:set_int('cooking', 1)
 			meta:set_int('time', 0)
 			result = true
@@ -385,6 +374,11 @@ minetest.register_craft{
 	burntime = 160,
 }
 
+aliska.register_craft(
+	MOD_NAME..':coke_furnace_bricks 9',
+	{1, 2, 1, 2, 1, 2, 1, 2, 1},
+	{'group:sand', 'default:clay_brick'}
+)
 aliska.register_craft(
 	MOD_NAME..':coke_block',
 	{1, 1, 1, 1, 1, 1, 1, 1, 1},
