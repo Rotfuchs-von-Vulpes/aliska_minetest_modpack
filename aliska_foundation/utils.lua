@@ -171,9 +171,13 @@ function aliska.register_alloy(ingredients, quantity, output)
 	}
 end
 
-function aliska.get_table(meta, str)
-	minetest.debug(str)
-	local table = meta:get_string(str)
-	minetest.debug(table)
-	minetest.debug(aliska.serialize(minetest.deserialize(table)))
+function aliska.make_brick_tiles(node)
+	local image1 = node..'.png'
+	local image2 = node..'_side.png'
+
+	return {
+		image1, image1,
+		image2, image2,
+		image1, image1,
+	}
 end

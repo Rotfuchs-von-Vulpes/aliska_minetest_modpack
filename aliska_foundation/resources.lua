@@ -11,10 +11,6 @@ minetest.register_craftitem(MOD_NAME..':charcoal', {
 	description = 'Charcoal',
 	inventory_image = 'aliska_charcoal.png'
 })
-minetest.register_craftitem(MOD_NAME..':coke', {
-	description = 'Coal Coke',
-	inventory_image = 'aliska_coke.png'
-})
 minetest.register_craftitem(MOD_NAME..':coal_powder', {
 	description = 'Coal Powder',
 	inventory_image = 'aliska_coal_powder.png'
@@ -43,25 +39,17 @@ minetest.register_craftitem(MOD_NAME..':graphite', {
 minetest.register_node(MOD_NAME..':graphite_block', {
 	description = 'Graphite Block',
 	tiles = { 'aliska_graphite_block.png' },
+	drop = MOD_NAME..':graphite_block',
 	groups = {cracky = 3},
-	sounds = default.node_sound_stone_defaults(),
-})
-minetest.register_node(MOD_NAME..':coke_block', {
-	description = 'Coal Coke Block',
-	tiles = { 'aliska_coke_block.png' },
-	groups = {cracky = 3},
+	is_ground_content = false,
 	sounds = default.node_sound_stone_defaults(),
 })
 minetest.register_node(MOD_NAME..':charcoal_block', {
 	description = 'Charcoal Block',
 	tiles = { 'aliska_charcoal_block.png' },
+	drop = MOD_NAME..':charcoal_block',
 	groups = {cracky = 3},
-	sounds = default.node_sound_stone_defaults(),
-})
-minetest.register_node(MOD_NAME..':blast_furnace_bricks', {
-	description = 'Blast Furnace Bricks',
-	tiles = { 'aliska_blast_furnace_bricks.png' },
-	groups = {cracky = 3},
+	is_ground_content = false,
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -122,6 +110,16 @@ aliska.register_craft(
 	MOD_NAME..':graphite 9',
 	{1},
 	{ MOD_NAME..':graphite_block' }
+)
+aliska.register_craft(
+	MOD_NAME..':charcoal_block',
+	{1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{ MOD_NAME..':charcoal' }
+)
+aliska.register_craft(
+	MOD_NAME..':charcoal 9',
+	{1},
+	{ MOD_NAME..':charcoal_block' }
 )
 aliska.register_grinder_craft('default:coal_lump', MOD_NAME..':coal_powder')
 aliska.register_grinder_craft('default:silver_sand', MOD_NAME..':silica 9')

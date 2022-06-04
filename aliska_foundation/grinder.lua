@@ -1,9 +1,4 @@
-grinder = {
-	recipes = {},
-	times = {},
-}
-
-function grinder.get_form(time, total)
+local function get_form(time, total)
 	return 'size[9,8;]'..
 	'list[context;src;2,1;1,1;]'..
 	'list[context;dst;4,2;3,1;]'..
@@ -18,11 +13,112 @@ function grinder.get_form(time, total)
 	default.get_hotbar_bg(0, 4)
 end
 
+grinder = {
+	recipes = {},
+	times = {},
+}
+
+local function after_place_node(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+
+	meta:set_string('dst', '')
+	meta:set_int('timer', 1)
+	meta:set_int('total', 1)
+
+	inv:set_size('src', 1)
+	inv:set_size('dst', 3)
+
+	meta:set_string(
+		'formspec',
+		get_form(meta:get_string('timer'), meta:get_string('total'))
+	)
+end
+
 function aliska.register_grinder_craft(input, output, time)
 	time = time or 10
-
 	grinder.recipes[input] = output
 	grinder.times[input] = time
+end
+
+local function on_receive_fields(pos, formname, fields)
+	if fields.quit then return end
+
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+
+	if meta:get_string('dst') == '' then
+		local src_stack = inv:get_list('src')
+		local item_name = src_stack[1]:get_name()
+		local output = grinder.recipes[item_name]
+
+		if output then
+			meta:set_int('timer', grinder.times[item_name])
+			meta:set_int('total', grinder.times[item_name])
+			meta:set_string('dst', output)
+			src_stack[1]:take_item(1)
+			inv:set_list('src', src_stack)
+			meta:set_string(
+				'formspec',
+				get_form(meta:get_string('timer'), meta:get_int('total'))
+			)
+		end
+	else
+		local timer = meta:get_int('timer')
+		
+		if timer > 0 then
+			meta:set_int('timer', timer - 1)
+		else
+			local output = meta:get_string('dst')
+
+			if inv:room_for_item('dst', output) then
+				inv:add_item('dst', output)
+				meta:set_string('dst', '')
+				meta:set_int('timer', 1)
+				meta:set_int('total', 1)
+			end
+		end
+
+		meta:set_string(
+			'formspec',
+			get_form(meta:get_string('timer'), meta:get_int('total'))
+		)
+	end
+end
+
+local function allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count)
+	if to_list == 'dst' then return 0 end
+
+	return count
+end
+
+local function allow_metadata_inventory_put(pos, list_name, index, stack)
+	if list_name == 'dst' then return 0 end
+
+	return stack:get_count()
+end
+
+local function can_dig(pos, player)
+	local player_inv = player:get_inventory()
+	local node_inv = minetest.get_meta(pos):get_inventory()
+
+	local src = node_inv:get_list('src')[1]
+	if player_inv:room_for_item('main', src) then
+		player_inv:add_item('main', src)
+	else 
+		return false
+	end
+
+	local dst_list = node_inv:get_list('dst')
+	for _, dst in ipairs(dst_list) do
+		if player_inv:room_for_item('main', dst) then
+			player_inv:add_item('main', dst)
+		else 
+			return false
+		end
+	end
+
+	return true
 end
 
 minetest.register_node(MOD_NAME..':manual_grinder', {
@@ -38,103 +134,10 @@ minetest.register_node(MOD_NAME..':manual_grinder', {
 	groups = { cracky = 1 },
 	drop = MOD_NAME..':manual_grinder',
 	paramtype2 = 'facedir',
-	after_place_node = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-
-		meta:set_string('dst', '')
-		meta:set_int('timer', 1)
-		meta:set_int('total', 1)
-
-		inv:set_size('src', 1)
-		inv:set_size('dst', 3)
-	end,
-	on_rightclick = function(pos)
-		local meta = minetest.get_meta(pos)
-
-		meta:set_string(
-			'formspec', 
-			grinder.get_form(meta:get_string('timer'), meta:get_string('total')))
-	end,
-	on_receive_fields = function(pos, formname, fields)
-		if fields.quit then return end
-
-		-- infotext
-
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-
-		if meta:get_string('dst') == '' then
-			local src_stack = inv:get_list('src')
-			local item_name = src_stack[1]:get_name()
-			local output = grinder.recipes[item_name]
-
-			if output then
-				meta:set_int('timer', grinder.times[item_name])
-				meta:set_int('total', grinder.times[item_name])
-				meta:set_string('dst', output)
-				src_stack[1]:take_item(1)
-				inv:set_list('src', src_stack)
-				meta:set_string(
-					'formspec',
-					grinder.get_form(meta:get_string('timer'), meta:get_int('total'))
-				)
-			end
-		else
-			local timer = meta:get_int('timer')
-			
-			if timer > 0 then
-				meta:set_int('timer', timer - 1)
-			else
-				local output = meta:get_string('dst')
-
-				if inv:room_for_item('dst', output) then
-					inv:add_item('dst', output)
-					meta:set_string('dst', '')
-					meta:set_int('timer', 1)
-					meta:set_int('total', 1)
-				end
-			end
-
-			meta:set_string(
-				'formspec',
-				grinder.get_form(meta:get_string('timer'), meta:get_int('total'))
-			)
-		end
-	end,
-	allow_metadata_inventory_move = 
-	function(pos, from_list, from_index, to_list, to_index, count)
-		if to_list == 'dst' then return 0 end
-
-		return count
-	end,
-	allow_metadata_inventory_put = function(pos, list_name, index, stack)
-		if list_name == 'dst' then return 0 end
-
-		return stack:get_count()
-	end,
-	can_dig = function(pos, player)
-		local player_inv = player:get_inventory()
-		local node_inv = minetest.get_meta(pos):get_inventory()
-
-		local src = node_inv:get_list('src')[1]
-		if player_inv:room_for_item('main', src) then
-			player_inv:add_item('main', src)
-		else 
-			return false
-		end
-
-		local dst_list = node_inv:get_list('dst')
-		for _, dst in ipairs(dst_list) do
-			if player_inv:room_for_item('main', dst) then
-				player_inv:add_item('main', dst)
-			else 
-				return false
-			end
-		end
-
-		return true
-	end
+	after_place_node = after_place_node,
+	on_receive_fields = on_receive_fields,
+	allow_metadata_inventory_move = allow_metadata_inventory_move,
+	allow_metadata_inventory_put = allow_metadata_inventory_put
 })
 
 minetest.register_node(MOD_NAME..':lever', {

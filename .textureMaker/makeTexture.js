@@ -196,9 +196,31 @@ function makeColorsJSON(metals) {
 	writeColorsJson('./metals.json', colors);
 }
 
+function makeFluidPalette(path, alpha, outputPath) {
+	let colorStack = [];
+	let imageBuffer = [];
+	let data = png.decode(fs.readFileSync(path));
+
+	for (let n of data.data) {
+		colorStack.push(n);
+
+		if (colorStack.length >= 4) {
+			colorStack[3] = alpha;
+			imageBuffer.push(...colorStack);
+			colorStack = [];
+		}
+	}
+
+	fs.writeFileSync(outputPath, png.encode({
+		width: data.width,
+		height: data.height,
+		data: imageBuffer
+	}));
+}
+
 // code texturing here
 
-const colors = readColorsInJSON('./metals.json');
+// const colors = readColorsInJSON('./metals.json');
 const metals = [
 	// 'cast_iron',
 	// 'silver',
@@ -219,23 +241,34 @@ const metals = [
 	// 'nitinol',
 	'invar',
 ];
-let items = [
-	// createItem(readImage('./textures/aliska_raw_any_ore.png'), 'ore'),
-	createItem(readImage('./textures/aliska_any_gear.png'), 'gear'),
-	createItem(readImage('./textures/aliska_any_block.png'), 'block'),
-	createItem(readImage('./textures/aliska_any_ingot.png'), 'ingot'),
-	createItem(readImage('./textures/aliska_any_powder.png'), 'powder'),
-	createItem(readImage('./textures/aliska_any_tiny_powder.png'), 'tiny_powder'),
-	createItem(readImage('./textures/aliska_any_nugget.png'), 'nugget'),
-	createItem(readImage('./textures/aliska_any_sword.png'), 'sword'),
-	createItem(readImage('./textures/aliska_any_pickaxe.png'), 'pickaxe'),
-	createItem(readImage('./textures/aliska_any_shovel.png'), 'shovel'),
-	createItem(readImage('./textures/aliska_any_hoe.png'), 'hoe'),
-	createItem(readImage('./textures/aliska_any_axe.png'), 'axe'),
-	createItem(readImage('./textures/aliska_any_plate.png'), 'plate'),
-]
+// let items = [
+// 	// createItem(readImage('./textures/aliska_raw_any_ore.png'), 'ore'),
+// 	createItem(readImage('./textures/items/aliska_any_gear.png'), 'gear'),
+// 	createItem(readImage('./textures/items/aliska_any_block.png'), 'block'),
+// 	createItem(readImage('./textures/items/aliska_any_ingot.png'), 'ingot'),
+// 	createItem(readImage('./textures/items/aliska_any_powder.png'), 'powder'),
+// 	createItem(readImage('./textures/items/aliska_any_tiny_powder.png'), 'tiny_powder'),
+// 	createItem(readImage('./textures/items/aliska_any_nugget.png'), 'nugget'),
+// 	createItem(readImage('./textures/items/aliska_any_sword.png'), 'sword'),
+// 	createItem(readImage('./textures/items/aliska_any_pickaxe.png'), 'pickaxe'),
+// 	createItem(readImage('./textures/items/aliska_any_shovel.png'), 'shovel'),
+// 	createItem(readImage('./textures/items/aliska_any_hoe.png'), 'hoe'),
+// 	createItem(readImage('./textures/items/aliska_any_axe.png'), 'axe'),
+// 	createItem(readImage('./textures/items/aliska_any_plate.png'), 'plate'),
+// ]
 
 // makeColorsJSON(metals);
-makeItemTextures(metals, items, colors);
+// makeItemTextures(metals, items, colors);
+
+makeFluidPalette(
+	'./textures/palettes/creosote_oil.png',
+	191,
+	'./textures/output/creosote_oil.png'
+);
+makeFluidPalette(
+	'./textures/palettes/creosote_oil_flowing.png',
+	191,
+	'./textures/output/creosote_oil_flowing.png'
+);
 
 console.log('feito.');
