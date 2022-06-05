@@ -14,6 +14,25 @@ function aliska.create_node_matrix(table, ingredients)
 	return matrix
 end
 
+function aliska.update_info(main_pos, fuel_percent, item_percent, text)
+	local meta = minetest.get_meta(main_pos)
+	local p1 = minetest.deserialize(meta:get_string('p1'))
+	local p2 = minetest.deserialize(meta:get_string('p2'))
+	
+	for i=p1.x, p2.x do
+		for j=p1.y, p2.y do
+			for k=p1.z, p2.z do
+				local pos = {x=i, y=j, z=k}
+				local meta = minetest.get_meta(pos)
+	
+				meta:set_string('formspec',
+					get_form(main_pos, fuel_percent, item_percent))
+				meta:set_string('infotext', text)
+			end
+		end
+	end
+end
+
 function aliska.create_multinode(
 		node, w, h, l, matrix,
 		on_place_node, after_place_nodes
