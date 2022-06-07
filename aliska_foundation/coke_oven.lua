@@ -226,7 +226,7 @@ minetest.register_craft{
 }
 
 aliska.register_craft(
-	MOD_NAME..':coke_furnace_bricks 9',
+	MOD_NAME..':coke_furnace_bricks 3',
 	{1, 2, 1, 2, 1, 2, 1, 2, 1},
 	{'group:sand', 'default:clay_brick'}
 )

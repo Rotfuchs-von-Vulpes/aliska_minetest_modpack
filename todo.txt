@@ -13,6 +13,7 @@ diorite
 andesite
 calcite
 granite
+conglomerate
 
 
 

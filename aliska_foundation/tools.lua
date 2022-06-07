@@ -61,7 +61,7 @@ local function Tool_capabilities(tool_group, times, uses, maxlevel, damage)
 		full_punch_interval = 1.1,
 		max_drop_level = 1,
 		groupcaps = {
-			[tool_group] = {times = times, uses = uses, maxlevel = maxlevel},
+			[tool_group] = {times = times, uses = 2 * uses, maxlevel = maxlevel},
 		},
 		damage_groups = {fleshy = damage},
 	}
@@ -73,13 +73,13 @@ local function Tool_data(item, mining_level, mining_speed, uses, damage)
 	elseif item == 'hoe' then
 		return Tool_capabilities('snappy', { [1]=4.5, [2]=4.5, [3]=4.5 }, uses, 1, damage - 1)
 	elseif item == 'shovel' then
-		local time, mining_level = pickaxe_data(mining_level, mining_speed)
+		local time, mining_level = pickaxe_data(mining_level, mining_speed + 3)
 
 		return Tool_capabilities('crumbly', time, uses, mining_level, damage)
 	elseif item == 'axe' then
-		local time, mining_level = pickaxe_data(1, mining_speed)
+		local time, mining_level = pickaxe_data(mining_level, mining_speed)
 
-		return Tool_capabilities('choppy', time, uses, mining_level, damage + 1)
+		return Tool_capabilities('choppy', time, uses, mining_level + 3, damage + 1)
 	elseif item == 'pickaxe' then
 		local time, mining_level = pickaxe_data(mining_level, mining_speed)
 

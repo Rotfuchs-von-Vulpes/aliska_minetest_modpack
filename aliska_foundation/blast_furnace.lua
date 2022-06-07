@@ -76,7 +76,7 @@ local function can_dig(pos, player)
 	return true
 end
 
-local blast_furnace = aliska.create_combustion_machine(
+blast_furnace = aliska.create_combustion_machine(
 	'Blast furnace',
 	MOD_NAME..':blast_furnace_active',
 	MOD_NAME..':blast_furnace_inactive',
@@ -216,7 +216,7 @@ minetest.register_node(MOD_NAME..':blast_furnace_bricks', {
 })
 
 aliska.register_craft(
-	MOD_NAME..':blast_furnace_bricks 9',
+	MOD_NAME..':blast_furnace_bricks 3',
 	{1, 2, 1, 2, 1, 2, 1, 2, 1},
 	{'group:sand', MOD_NAME..':coke_furnace_bricks'}
 )
