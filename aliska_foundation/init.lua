@@ -6,7 +6,7 @@ aliska.path = minetest.get_modpath(MOD_NAME)
 dofile(aliska.path..'/utils.lua')
 
 local metals = {
-	'lead', 'iron', 'cast_iron', 'silver', 'zinc', 'brass',
+	'lead', 'iron', 'silver', 'zinc', 'brass',
 	'steel', 'copper', 'bronze', 'tin', 'gold', 'aluminium',
 	'titanium', 'nickel', 'electrum', 'monel', 'nitinol',
 	'invar'

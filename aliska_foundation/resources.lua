@@ -52,6 +52,15 @@ minetest.register_node(MOD_NAME..':charcoal_block', {
 	is_ground_content = false,
 	sounds = default.node_sound_stone_defaults(),
 })
+minetest.register_node(MOD_NAME..":treated_wood", {
+	description = "Treated Wood Planks",
+	paramtype2 = "facedir",
+	place_param2 = 0,
+	tiles = {"aliska_treated_wood.png"},
+	is_ground_content = false,
+	groups = {choppy = 2, oddly_breakable_by_hand = 2},
+	sounds = default.node_sound_wood_defaults(),
+})
 
 minetest.register_craft{
 	type = 'fuel',
@@ -61,7 +70,13 @@ minetest.register_craft{
 minetest.register_craft{
 	type = 'fuel',
 	recipe = 'group:tree',
-	burntime = 1,
+	burntime = 3,
+}
+minetest.register_craft{
+	type = 'shapeless',
+	recipe = {'group:wood', MOD_NAME..':glass_bottle_creosote_oil'},
+	output = MOD_NAME..':treated_wood',
+	replacements = {{MOD_NAME..':glass_bottle_creosote_oil', 'vessels:glass_bottle'}}
 }
 
 for _, powder in ipairs({

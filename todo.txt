@@ -3,7 +3,10 @@ lead  *calcium carbonate
 gold  *borax, *silicon dioxide, *salt
 aluminium  *fluorite, *sodium hidroxide
 
-
+rubber tree
+plastic
+oil and creosete buckets
+treated wood
 
 marble
 limestone
@@ -14,12 +17,3 @@ andesite
 calcite
 granite
 conglomerate
-
-
-
-inputs 1-n
-outputs 1-n
-
-
-
-

@@ -220,3 +220,5 @@ for _, gem in ipairs(new_gems) do
 	local stone_ore = register_ore_node(drop, gem, 1, 'stone')
 	register_generations(stone_ore, 'default:stone', clusters, ranges)
 end
+
+blast_furnace:register_craft('default:iron_lump', 'default:steel_ingot')
