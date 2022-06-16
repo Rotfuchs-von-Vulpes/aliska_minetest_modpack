@@ -1,19 +1,32 @@
 iron  *calcium carbonate
 lead  *calcium carbonate
-gold  *borax, *silicon dioxide, *salt
+gold  *borax, *silica, *salt
 aluminium  *fluorite, *sodium hidroxide
+
+
 
 rubber tree
 plastic
-oil and creosete buckets
-treated wood
+*oil and creosete buckets
+*treated wood
 
-marble
+
+
 limestone
+marble
+
 basalt
+
 monzonite
 diorite
 andesite
-calcite
 granite
+gneiss
+
+calcite
+
 conglomerate
+
+quartzite
+
+

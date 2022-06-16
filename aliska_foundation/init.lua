@@ -1,5 +1,5 @@
 aliska = {}
-MOD_NAME = 'aliska_foudation'
+MOD_NAME = minetest.get_current_modname()
 
 aliska.path = minetest.get_modpath(MOD_NAME)
 
@@ -29,6 +29,7 @@ dofile(aliska.path..'/gems.lua')
 dofile(aliska.path..'/tools.lua')
 
 dofile(aliska.path..'/ores.lua')
+dofile(aliska.path..'/tree.lua')
 
 for _, metal in ipairs(metals) do
 	local items = aliska.register_metal(metal)
