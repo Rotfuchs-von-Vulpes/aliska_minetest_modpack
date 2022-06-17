@@ -240,14 +240,3 @@ aliska.register_craft(
 	{1},
 	{ MOD_NAME..':coke_block' }
 )
-
-minetest.register_chatcommand('debug', {
-	func = function(name)
-		local player = minetest.get_player_by_name(name)
-		local inv = player:get_inventory()
-
-		if inv:room_for_item('main', MOD_NAME..':iron_ingot 99') then
-			inv:add_item('main', MOD_NAME..':iron_ingot 99')
-		end
-	end
-})

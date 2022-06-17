@@ -54,6 +54,31 @@ minetest.register_node(MOD_NAME..":treated_wood", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
+if minetest.get_modpath('stairs') then
+	local function my_register_stair_and_slab(subname, recipeitem, groups, images,
+			desc_stair, desc_slab, sounds, worldaligntex)
+		stairs.register_stair(subname, recipeitem, groups, images, desc_stair,
+			sounds, worldaligntex)
+		stairs.register_stair_inner(subname, recipeitem, groups, images, "",
+			sounds, worldaligntex, "Inner "..desc_stair)
+		stairs.register_stair_outer(subname, recipeitem, groups, images, "",
+			sounds, worldaligntex, "Outer "..desc_stair)
+		stairs.register_slab(subname, recipeitem, groups, images, desc_slab,
+			sounds, worldaligntex)
+	end
+
+	my_register_stair_and_slab(
+		"treated_wood",
+		MOD_NAME..":treated_wood",
+		{choppy = 3, oddly_breakable_by_hand = 2, flammable = 3},
+		{"aliska_treated_wood.png"},
+		"Treated Wood Stair",
+		"Treated Wood Slab",
+		default.node_sound_wood_defaults(),
+		false
+	)
+end
+
 minetest.register_craft{
 	type = 'fuel',
 	recipe = MOD_NAME..':charcoal',

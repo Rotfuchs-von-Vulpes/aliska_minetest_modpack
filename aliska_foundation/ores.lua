@@ -130,8 +130,6 @@ local function register_ore_node(drop, name, mining_level, where_in, mining_type
 		sounds = default.node_sound_stone_defaults(),
 	})
 
-	minetest.debug(aliska.serialize(minetest.registered_nodes[ore_name]))
-
 	return ore_name
 end
 

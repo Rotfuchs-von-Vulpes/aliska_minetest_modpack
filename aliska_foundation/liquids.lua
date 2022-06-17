@@ -110,18 +110,20 @@ local function register_bottle(name, description, tile)
 	})
 end
 
-minetest.override_item('bucket:bucket_empty', {
-	inventory_image = 'aliska_bucket_empty.png'
-})
-minetest.override_item('bucket:bucket_lava', {
-	inventory_image = 'aliska_bucket_lava.png'
-})
-minetest.override_item('bucket:bucket_water', {
-	inventory_image = 'aliska_bucket_water.png'
-})
-minetest.override_item('bucket:bucket_river_water', {
-	inventory_image = 'aliska_bucket_river_water.png'
-})
+minetest.register_on_mods_loaded(function()
+	minetest.override_item('bucket:bucket_empty', {
+		inventory_image = 'aliska_bucket_empty.png'
+	})
+	minetest.override_item('bucket:bucket_lava', {
+		inventory_image = 'aliska_bucket_lava.png'
+	})
+	minetest.override_item('bucket:bucket_water', {
+		inventory_image = 'aliska_bucket_water.png'
+	})
+	minetest.override_item('bucket:bucket_river_water', {
+		inventory_image = 'aliska_bucket_river_water.png'
+	})
+end)
 
 register_liquid(
 	MOD_NAME..':oil',

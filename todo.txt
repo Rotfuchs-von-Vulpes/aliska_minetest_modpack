@@ -1,15 +1,15 @@
-iron  *calcium carbonate
-lead  *calcium carbonate
-gold  *borax, *silica, *salt
-aluminium  *fluorite, *sodium hidroxide
+iron: *calcium carbonate
+lead: *calcium carbonate
+gold: *borax, *silica, *salt
+aluminium: *fluorite, *sodium hidroxide
 
 
+*treated wood things
 
-*rubber tree
-*oil and creosete buckets
-*treated wood
-
-
+mud *clay
+shale
+schist
+slate
 
 limestone
 marble
@@ -19,13 +19,16 @@ basalt
 monzonite
 diorite
 andesite
+rhyolite
 granite
+gabbro
 gneiss
 
-calcite
-
+*gravel
 conglomerate
 
+*sand
+*sandstone
 quartzite
 
 
