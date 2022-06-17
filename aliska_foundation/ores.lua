@@ -51,10 +51,10 @@ local ores = {
 	),
 	quartz = Ore_definitions(
 		'gems_quartz',
-		{{ 0, -31000 }, { 64, -31000}, { 31000, 0 }},
-		{3, 3, 3},
-		{6, 4, 2},
-		{15*15*15, 14*14*14, 15*15*15}
+		{{ -256, -31000 }, { -256, -31000 }},
+		{3, 3},
+		{6, 4},
+		{15*15*15, 14*14*14}
 	),
 	borax = Ore_definitions(
 		'gems_borax',
@@ -113,16 +113,24 @@ local function atualize_lump(name, description)
 	return lump_name
 end
 
-local function register_ore_node(drop, name, mining_level, where_in )
+local function register_ore_node(drop, name, mining_level, where_in, mining_type)
 	local ore_name = MOD_NAME..':'..where_in..'_with_'..name
+	local mining_type = mining_type or 'cracky'
+	local falling 
+
+	if mining_type == 'crumbly' then
+		falling = 1
+	end
 
 	minetest.register_node(ore_name, {
 		description = c(name)..' Ore',
 		tiles = { 'default_'..where_in..'.png^aliska_raw_'..name..'_ore.png' },
-		groups = { cracky = mining_level },
+		groups = { [mining_type] = mining_level, falling_node = falling },
 		drop = drop,
 		sounds = default.node_sound_stone_defaults(),
 	})
+
+	minetest.debug(aliska.serialize(minetest.registered_nodes[ore_name]))
 
 	return ore_name
 end
@@ -222,7 +230,7 @@ for _, gem in ipairs(new_gems) do
 end
 
 register_generation(
-	register_ore_node(MOD_NAME..':niter', 'niter', 3, 'silver_sand'),
+	register_ore_node(MOD_NAME..':niter', 'niter', 3, 'silver_sand', 'crumbly'),
 	'default:silver_sand',
 	Cluster(12*12*12, 6, 3),
 	{31000, -256}
