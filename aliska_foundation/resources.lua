@@ -19,14 +19,6 @@ minetest.register_craftitem(MOD_NAME..':sulfur', {
 	description = 'Sulfur',
 	inventory_image = 'aliska_sulfur.png'
 })
-minetest.register_craftitem(MOD_NAME..':latex', {
-	description = 'Latex',
-	inventory_image = 'aliska_latex.png'
-})
-minetest.register_craftitem(MOD_NAME..':rubber', {
-	description = 'Rubber',
-	inventory_image = 'aliska_rubber.png'
-})
 minetest.register_craftitem(MOD_NAME..':silica', {
 	description = 'Silica',
 	inventory_image = 'aliska_silica.png'
@@ -103,6 +95,18 @@ for _, powder in ipairs({
 		{ MOD_NAME..':'..powder..'_block' }
 	)
 end
+
+minetest.override_item(MOD_NAME..':niter', {
+	on_use = function(itemstack, player, pointed_thing)
+		local pos = pointed_thing.under
+		if not pos then return end
+		local node = minetest.get_node(pos).name
+		if minetest.registered_nodes[node].groups.sapling then
+			minetest.get_node_timer(pos):start(0)
+			minetest.debug('foi! eu acho...')
+		end
+	end,
+})
 
 aliska.register_cooking('group:tree', MOD_NAME..':charcoal')
 aliska.register_cooking(MOD_NAME..':silica', MOD_NAME..':gems_quartz')

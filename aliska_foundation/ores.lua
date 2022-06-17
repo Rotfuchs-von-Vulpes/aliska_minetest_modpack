@@ -221,4 +221,11 @@ for _, gem in ipairs(new_gems) do
 	register_generations(stone_ore, 'default:stone', clusters, ranges)
 end
 
+register_generation(
+	register_ore_node(MOD_NAME..':niter', 'niter', 3, 'silver_sand'),
+	'default:silver_sand',
+	Cluster(12*12*12, 6, 3),
+	{31000, -256}
+)
+
 blast_furnace:register_craft('default:iron_lump', 'default:steel_ingot')
