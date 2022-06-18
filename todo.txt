@@ -6,16 +6,16 @@ aluminium: *fluorite, *sodium hidroxide
 
 *treated wood things
 
-mud *clay
-shale
-schist
-slate
+*mud *clay
+*shale
+*schist
+*slate
 
-limestone
+*limestone
 marble
 
-basaltic sand
-basalt
+*basaltic sand
+*basalt
 
 monzonite
 diorite
@@ -26,7 +26,7 @@ gabbro
 gneiss
 
 *gravel
-conglomerate
+*conglomerate
 
 *sand
 *sandstone
