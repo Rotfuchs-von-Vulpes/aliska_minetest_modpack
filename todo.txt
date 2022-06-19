@@ -6,30 +6,30 @@ aluminium: *fluorite, *sodium hidroxide
 
 *treated wood things
 
-*mud *clay
+*mud, *clay, *red mud
 *shale
 *schist
 *slate
 
 *limestone
-marble
+*marble
 
 *basaltic sand
 *basalt
 
-monzonite
-diorite
-andesite
-rhyolite
-granite
-gabbro
-gneiss
+*monzonite
+*diorite
+*andesite
+*rhyolite
+*granite
+*gabbro
+*gneiss
 
 *gravel
 *conglomerate
 
 *sand
 *sandstone
-quartzite
+*quartzite
 
 
