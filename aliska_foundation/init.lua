@@ -28,8 +28,8 @@ dofile(aliska.path..'/metal.lua')
 dofile(aliska.path..'/gems.lua')
 dofile(aliska.path..'/tools.lua')
 
-dofile(aliska.path..'/ores.lua')
 dofile(aliska.path..'/rocks.lua')
+dofile(aliska.path..'/ores.lua')
 dofile(aliska.path..'/tree.lua')
 
 for _, metal in ipairs(metals) do
