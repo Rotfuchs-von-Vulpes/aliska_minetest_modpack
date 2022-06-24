@@ -20,9 +20,9 @@ local matrix_replace = aliska.create_node_matrix({
 		{1, 1, 1}
 	}
 }, {
-	MOD_NAME..':blast_furnace',
-	MOD_NAME..':blast_furnace_inactive',
-	MOD_NAME..':blast_furnace_center'
+	'aliska_expanse:blast_furnace',
+	'aliska_expanse:blast_furnace_inactive',
+	'aliska_expanse:blast_furnace_center'
 })
 
 local function get_form(pos, fuel_percent, item_percent)
@@ -78,8 +78,8 @@ end
 
 blast_furnace = aliska.create_combustion_machine(
 	'Blast furnace',
-	MOD_NAME..':blast_furnace_active',
-	MOD_NAME..':blast_furnace_inactive',
+	'aliska_expanse:blast_furnace_active',
+	'aliska_expanse:blast_furnace_inactive',
 	60,
 	function(pos, node)
 		local positions = {}
@@ -100,7 +100,7 @@ blast_furnace = aliska.create_combustion_machine(
 	function(stack)
 		local item = stack:get_name()
 
-		return item == MOD_NAME..':charcoal' or item == MOD_NAME..':coke'
+		return item == 'aliska_expanse:charcoal' or item == 'aliska_expanse:coke'
 	end,
 	function(main_pos, fuel_percent, item_percent, text)
 		local meta = minetest.get_meta(main_pos)
@@ -122,11 +122,14 @@ blast_furnace = aliska.create_combustion_machine(
 	end
 )
 
-blast_furnace:register_craft(FOUDATION..':iron_ingot', 'default:steel_ingot')
-blast_furnace:register_craft(FOUDATION..':iron_block', 'default:steelblock')
+blast_furnace:register_craft(
+	'aliska_foudation:raw_aluminium', 'aliska_foudation:aluminium_ingot'
+)
+blast_furnace:register_craft('aliska_foudation:iron_ingot', 'default:steel_ingot')
+blast_furnace:register_craft('aliska_foudation:iron_block', 'default:steelblock')
 
 local on_construct, after_dig_node, on_blast = aliska.create_multinode(
-	MOD_NAME..':blast_furnace_bricks', 3, 4, 3, matrix_replace,
+	'aliska_expanse:blast_furnace_bricks', 3, 4, 3, matrix_replace,
 	function(pos, main_pos)
 		local meta = minetest.get_meta(pos)
 
@@ -142,7 +145,7 @@ local on_construct, after_dig_node, on_blast = aliska.create_multinode(
 	end
 )
 
-minetest.register_node(MOD_NAME..':blast_furnace_active', {
+minetest.register_node('aliska_expanse:blast_furnace_active', {
 	description = 'Blast Furnace',
 	tiles = { {
 		image = 'aliska_blast_furnace_active.png',
@@ -158,38 +161,38 @@ minetest.register_node(MOD_NAME..':blast_furnace_active', {
 	groups = {cracky=2, not_in_creative_inventory=1},
 	is_ground_content = false,
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = 'aliska_expanse:blast_furnace_bricks',
 	after_dig_node = after_dig_node,
 	on_blast = function(pos) end,
 	can_dig = can_dig,
 })
-minetest.register_node(MOD_NAME..':blast_furnace_inactive', {
+minetest.register_node('aliska_expanse:blast_furnace_inactive', {
 	description = 'Blast Furnace',
 	tiles = { 'aliska_blast_furnace_inactive.png' },
 	groups = {cracky = 3, not_in_creative_inventory=1},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = 'aliska_expanse:blast_furnace_bricks',
 	on_rightclick = on_rightclick,
 	after_dig_node = after_dig_node,
 	on_blast = function(pos) end,
 	can_dig = can_dig,
 })
-minetest.register_node(MOD_NAME..':blast_furnace', {
+minetest.register_node('aliska_expanse:blast_furnace', {
 	description = 'Blast Furnace',
 	tiles = aliska.make_brick_tiles('aliska_blast_furnace_bricks'),
 	groups = {cracky = 3, not_in_creative_inventory=1},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = 'aliska_expanse:blast_furnace_bricks',
 	after_dig_node = after_dig_node,
 	on_blast = function(pos) end,
 	can_dig = can_dig,
 })
-minetest.register_node(MOD_NAME..':blast_furnace_center', {
+minetest.register_node('aliska_expanse:blast_furnace_center', {
 	description = 'Blast Furnace',
 	tiles = aliska.make_brick_tiles('aliska_blast_furnace_bricks'),
 	groups = {cracky = 3, not_in_creative_inventory=1},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = 'aliska_expanse:blast_furnace_bricks',
 
 	after_dig_node = after_dig_node,
 
@@ -206,17 +209,17 @@ minetest.register_node(MOD_NAME..':blast_furnace_center', {
 	allow_metadata_inventory_move = blast_furnace.allow_metadata_inventory_move,
 })
 
-minetest.register_node(MOD_NAME..':blast_furnace_bricks', {
+minetest.register_node('aliska_expanse:blast_furnace_bricks', {
 	description = 'Blast Furnace Bricks',
 	tiles = aliska.make_brick_tiles('aliska_blast_furnace_bricks'),
 	groups = {cracky = 3},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = 'aliska_expanse:blast_furnace_bricks',
 	on_construct = on_construct
 })
 
 aliska.register_craft(
-	MOD_NAME..':blast_furnace_bricks 3',
+	'aliska_expanse:blast_furnace_bricks 3',
 	{1, 2, 1, 2, 1, 2, 1, 2, 1},
-	{'group:sand', MOD_NAME..':coke_furnace_bricks'}
+	{'group:sand', 'aliska_expanse:coke_furnace_bricks'}
 )

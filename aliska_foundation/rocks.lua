@@ -87,7 +87,7 @@ local rocks_definition = {
 chiseled_rocks = {'basalt_and_limestone'}
 
 local function register_node(name, description, tiles, groups, sounds)
-	local id = MOD_NAME..':'..name
+	local id = 'aliska_foudation:'..name
 
 	minetest.register_node(id, {
 		description = description,
@@ -146,7 +146,7 @@ end
 
 minetest.register_ore{
 	ore_type = "vein",
-	ore = MOD_NAME..':rocks_basalt',
+	ore = 'aliska_foudation:rocks_basalt',
 	wherein  = {'default:stone'},
 	y_max = -256,
 	y_min = -31000,
@@ -172,12 +172,12 @@ for rock, def in pairs(rocks_definition) do
 end
 
 for _, rock in ipairs(blob_generated) do 
-	register_blob(MOD_NAME..':rocks_'..rock)
+	register_blob('aliska_foudation:rocks_'..rock)
 end
 
 for rock, biomes in pairs(blob_biomes) do
 	register_blob(
-		MOD_NAME..':rocks_'..rock,
+		'aliska_foudation:rocks_'..rock,
 		biomes,
 		{
 			'default:stone', 'default:desert_stone',
@@ -189,7 +189,7 @@ end
 local has_stairs = minetest.get_modpath('stairs')
 
 for _, rock in ipairs(polished) do
-	minetest.register_node(MOD_NAME..':polished_'..rock, {
+	minetest.register_node('aliska_foudation:polished_'..rock, {
 		description = 'Polished '..rocks_definition[rock].description,
 		tiles = {'aliska_polished_'..rock..'.png'},
 		groups = {cracky=3},
@@ -197,9 +197,9 @@ for _, rock in ipairs(polished) do
 	})
 
 	aliska.register_craft(
-		MOD_NAME..':polished_'..rock..' 4',
+		'aliska_foudation:polished_'..rock..' 4',
 		{1, 1, 1, 1},
-		{MOD_NAME..':rocks_'..rock}
+		{'aliska_foudation:rocks_'..rock}
 	)
 
 	if has_stairs then
@@ -207,7 +207,7 @@ for _, rock in ipairs(polished) do
 
 		aliska.register_stair_and_slab(
 			'polished_'..rock,
-			MOD_NAME..':treated_wood',
+			'aliska_foudation:treated_wood',
 			{choppy = 3, oddly_breakable_by_hand = 2, flammable = 3},
 			{'aliska_polished_'..rock..'.png'},
 			'Polished '..description..' Stair',
@@ -224,7 +224,7 @@ rock = register_chiseled_rock('basalt_and_limestone')
 aliska.register_craft(
 	rock..' 4',
 	{1, 2, 2, 1},
-	{MOD_NAME..':rocks_basalt', MOD_NAME..':rocks_limestone'}
+	{'aliska_foudation:rocks_basalt', 'aliska_foudation:rocks_limestone'}
 )
 
-aliska.register_cooking(MOD_NAME..':rocks_black_sand', MOD_NAME..':rocks_basalt')
+aliska.register_cooking('aliska_foudation:rocks_black_sand', 'aliska_foudation:rocks_basalt')

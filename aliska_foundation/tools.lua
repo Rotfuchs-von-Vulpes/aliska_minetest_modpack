@@ -88,7 +88,7 @@ local function Tool_data(item, mining_level, mining_speed, uses, damage)
 end
 
 local function register_tool(metal_name, tool, definition)
-	local tool_name = MOD_NAME..':'..metal_name..'_'..tool
+	local tool_name = 'aliska_foudation:'..metal_name..'_'..tool
 
 	minetest.register_tool(tool_name, {
 		description = C(metal_name, ' '..c(tool)),
@@ -202,12 +202,12 @@ for _, tool in ipairs(tools) do
 		data[4]
 	))
 
-	aliska.register_cooking(MOD_NAME..':nitinol_'..tool, MOD_NAME..':nitinol_'..tool)
+	aliska.register_cooking('aliska_foudation:nitinol_'..tool, 'aliska_foudation:nitinol_'..tool)
 
 	aliska.register_craft(
 		tool_name,
 		tools_recipes[tool],
-		{ MOD_NAME..':gems_quartz', 'group:stick' }
+		{ 'aliska_foudation:gems_quartz', 'group:stick' }
 	)
 end
 
@@ -216,7 +216,7 @@ minetest.register_chatcommand('take', {
 		local player = minetest.get_player_by_name(name)
 		local inv = player:get_inventory()
 
-		inv:add_item('main', MOD_NAME..':nitinol_pickaxe 1 23232')
+		inv:add_item('main', 'aliska_foudation:nitinol_pickaxe 1 23232')
 
 		return true
 	end

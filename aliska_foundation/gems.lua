@@ -6,11 +6,11 @@ local new_gems = {
 local old_gems = {'diamond'}
 
 local function register_gem(gem_name)
-	minetest.register_craftitem(MOD_NAME..':gems_'..gem_name, {
+	minetest.register_craftitem('aliska_foudation:gems_'..gem_name, {
 		description = c(gem_name),
 		inventory_image = 'aliska_gems_'..gem_name..'.png',
 	})
-	minetest.register_node(MOD_NAME..':gems_'..gem_name..'_block', {
+	minetest.register_node('aliska_foudation:gems_'..gem_name..'_block', {
 		description = c(gem_name)..' Block',
 		tiles = { 'aliska_gems_'..gem_name..'_block.png' },
 		is_ground_content = false,
@@ -19,14 +19,14 @@ local function register_gem(gem_name)
 	})
 
 	aliska.register_craft(
-		MOD_NAME..':gems_'..gem_name..'_block',
+		'aliska_foudation:gems_'..gem_name..'_block',
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ MOD_NAME..':gems_'..gem_name }
+		{ 'aliska_foudation:gems_'..gem_name }
 	)
 	aliska.register_craft(
-		MOD_NAME..':gems_'..gem_name..' 9',
+		'aliska_foudation:gems_'..gem_name..' 9',
 		{ 1 },
-		{ MOD_NAME..':gems_'..gem_name..'_block' }
+		{ 'aliska_foudation:gems_'..gem_name..'_block' }
 	)
 end
 

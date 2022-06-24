@@ -126,36 +126,36 @@ minetest.register_on_mods_loaded(function()
 end)
 
 register_liquid(
-	MOD_NAME..':oil',
+	'aliska_foudation:oil',
 	'Oil',
 	'aliska_oil',
 	3, 1, {36, 31, 31, 191}
 )
 register_liquid(
-	MOD_NAME..':creosote_oil',
+	'aliska_foudation:creosote_oil',
 	'Creosote Oil',
 	'aliska_creosote_oil',
 	1, 0.5, {138, 111, 48, 191}
 )
 
 register_bottle(
-	MOD_NAME..':glass_bottle_creosote_oil',
+	'aliska_foudation:glass_bottle_creosote_oil',
 	"Creosote Oil Glass Bottle",
 	"aliska_glass_bottle_creosote_oil.png"
 )
 
 bucket.register_liquid(
-	MOD_NAME..":oil_source",
-	MOD_NAME..":oil_flowing",
-	MOD_NAME..":bucket_oil",
+	"aliska_foudation:oil_source",
+	"aliska_foudation:oil_flowing",
+	"aliska_foudation:bucket_oil",
 	"aliska_bucket_oil.png",
 	"Oil Bucket",
 	{tool = 1}
 )
 bucket.register_liquid(
-	MOD_NAME..":creosote_oil_source",
-	MOD_NAME..":creosote_oil_flowing",
-	MOD_NAME..":bucket_creosote_oil",
+	"aliska_foudation:creosote_oil_source",
+	"aliska_foudation:creosote_oil_flowing",
+	"aliska_foudation:bucket_creosote_oil",
 	"aliska_bucket_creosote_oil.png",
 	"Creosote Oil Bucket",
 	{tool = 1}
@@ -163,7 +163,7 @@ bucket.register_liquid(
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = MOD_NAME..":bucket_oil",
+	recipe = "aliska_foudation:bucket_oil",
 	burntime = 60,
-	replacements = {{MOD_NAME..":bucket_oil", "bucket:bucket_empty"}},
+	replacements = {{"aliska_foudation:bucket_oil", "bucket:bucket_empty"}},
 })

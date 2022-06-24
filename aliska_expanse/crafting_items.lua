@@ -27,27 +27,27 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 end)
 
 function aliska.register_crafting_tool(item_name, recipe_definition)
-	minetest.register_tool(MOD_NAME..':'..item_name, {
+	minetest.register_tool('aliska_expanse:'..item_name, {
 		description = c(item_name),
 		inventory_image = 'aliska_'..item_name..'.png',
 	})
 	
 	aliska.register_craft(
-		MOD_NAME..':'..item_name,
+		'aliska_expanse:'..item_name,
 		recipe_definition[1],
 		recipe_definition[2]
 	)
 
-	table.insert(craft_tools, MOD_NAME..':'..item_name)
+	table.insert(craft_tools, 'aliska_expanse:'..item_name)
 
 	return function(input, output)
 		minetest.register_craft{
 			type = 'shapeless',
 			output = output,
-			recipe = { MOD_NAME..':'..item_name, input},
+			recipe = { 'aliska_expanse:'..item_name, input},
 		}
 		
 		table.insert(output_items, output)
-		craft_tools_map[ItemStack(output):get_name()] = MOD_NAME..':'..item_name
+		craft_tools_map[ItemStack(output):get_name()] = 'aliska_expanse:'..item_name
 	end
 end

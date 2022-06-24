@@ -6,7 +6,7 @@ local items = { 'plate', 'gear', 'powder', 'tiny_powder', 'nugget' }
 local items_name = {}
 
 local function register_item(metal_name, item)
-	minetest.register_craftitem(MOD_NAME..':'..metal_name..'_'..item, {
+	minetest.register_craftitem('aliska_foudation:'..metal_name..'_'..item, {
 		description = C(metal_name, ' '..c(item)),
 		inventory_image = 'aliska_'..metal_name..'_'..item..'.png',
 	})
@@ -16,13 +16,13 @@ function aliska.register_metal(metal_name)
 	local mat
 
 	for _, item in ipairs(items) do
-		items_name[item] = MOD_NAME..':'..metal_name..'_'..item
+		items_name[item] = 'aliska_foudation:'..metal_name..'_'..item
 		register_item(metal_name, item)
 	end
 
 	if not registered_metals_set[metal_name] then
-		items_name['ingot'] = MOD_NAME..':'..metal_name..'_ingot'
-		items_name['block'] = MOD_NAME..':'..metal_name..'_block'
+		items_name['ingot'] = 'aliska_foudation:'..metal_name..'_ingot'
+		items_name['block'] = 'aliska_foudation:'..metal_name..'_block'
 		register_item(metal_name, 'ingot')
 	
 		minetest.register_node(items_name['block'], {
@@ -45,7 +45,7 @@ function aliska.register_metal(metal_name)
 	aliska.register_craft(
 		items_name['gear'],
 		{ 0, 1, 0, 1, 2, 1, 0, 1, 0 },
-		{ items_name['plate'], MOD_NAME..':iron_ingot' }
+		{ items_name['plate'], 'aliska_foudation:iron_ingot' }
 	)
 	aliska.register_craft(items_name['nugget']..' 9', {1}, {items_name['ingot']})
 	aliska.register_craft(
@@ -104,41 +104,41 @@ minetest.register_on_mods_loaded(function()
 		type = 'cooking',
 		recipe = 'default:iron_lump',
 	})
-	aliska.register_cooking('default:iron_lump', MOD_NAME..':iron_ingot')
+	aliska.register_cooking('default:iron_lump', 'aliska_foudation:iron_ingot')
 end)
 
 aliska.register_alloy(
-	{ MOD_NAME..':copper_powder', MOD_NAME..':zinc_powder' },
+	{ 'aliska_foudation:copper_powder', 'aliska_foudation:zinc_powder' },
 	{ 2, 1 },
-	MOD_NAME..':brass_powder'
+	'aliska_foudation:brass_powder'
 )
 
 aliska.register_alloy(
-	{ MOD_NAME..':copper_powder', MOD_NAME..':tin_powder' },
+	{ 'aliska_foudation:copper_powder', 'aliska_foudation:tin_powder' },
 	{ 3, 1 },
-	MOD_NAME..':bronze_powder'
+	'aliska_foudation:bronze_powder'
 )
 
 aliska.register_alloy(
-	{ MOD_NAME..':silver_powder', MOD_NAME..':gold_powder' },
+	{ 'aliska_foudation:silver_powder', 'aliska_foudation:gold_powder' },
 	{ 1, 1 },
-	MOD_NAME..':electrum_powder'
+	'aliska_foudation:electrum_powder'
 )
 
 aliska.register_alloy(
-	{ MOD_NAME..':titanium_powder', MOD_NAME..':nickel_powder' },
+	{ 'aliska_foudation:titanium_powder', 'aliska_foudation:nickel_powder' },
 	{ 1, 1 },
-	MOD_NAME..':nitinol_powder'
+	'aliska_foudation:nitinol_powder'
 )
 
 aliska.register_alloy(
-	{ MOD_NAME..':nickel_powder', MOD_NAME..':copper_powder' },
+	{ 'aliska_foudation:nickel_powder', 'aliska_foudation:copper_powder' },
 	{ 3, 1 },
-	MOD_NAME..':monel_powder'
+	'aliska_foudation:monel_powder'
 )
 
 aliska.register_alloy(
-	{ MOD_NAME..':nickel_powder', MOD_NAME..':iron_powder' },
+	{ 'aliska_foudation:nickel_powder', 'aliska_foudation:iron_powder' },
 	{ 1, 3 },
-	MOD_NAME..':invar_powder'
+	'aliska_foudation:invar_powder'
 )

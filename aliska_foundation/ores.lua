@@ -84,7 +84,7 @@ local is_smelting = aliska.Set{
 }
 
 local function register_lump(name, description)
-	local lump_name = MOD_NAME..':'..name..'_lump'
+	local lump_name = 'aliska_foudation:'..name..'_lump'
 
 	minetest.register_craftitem(lump_name, {
 		description = description,
@@ -92,11 +92,11 @@ local function register_lump(name, description)
 	})
 
 	if is_smelting[name] then
-		aliska.register_cooking(lump_name, MOD_NAME..':'..name..'_ingot')
-		-- aliska.register_grinder_craft(lump_name, MOD_NAME..':'..name..'_powder 2')
-		-- aliska.register_grinder_craft(MOD_NAME..':'..name..'_ingot', MOD_NAME..':'..name..'_powder')
+		aliska.register_cooking(lump_name, 'aliska_foudation:'..name..'_ingot')
+		-- aliska.register_grinder_craft(lump_name, 'aliska_foudation:'..name..'_powder 2')
+		-- aliska.register_grinder_craft('aliska_foudation:'..name..'_ingot', 'aliska_foudation:'..name..'_powder')
 	elseif name ~= 'titanium' then
-		-- blast_furnace:register_craft(lump_name, MOD_NAME..':'..name..'_ingot')
+		-- blast_furnace:register_craft(lump_name, 'aliska_foudation:'..name..'_ingot')
 	end
 
 	return lump_name
@@ -114,7 +114,7 @@ local function atualize_lump(name, description)
 end
 
 local function register_ore_node(drop, name, mining_level, where_in, mining_type)
-	local ore_name = MOD_NAME..':'..where_in..'_with_'..name
+	local ore_name = 'aliska_foudation:'..where_in..'_with_'..name
 	local mining_type = mining_type or 'cracky'
 	local falling 
 
@@ -199,7 +199,7 @@ for ore, ore_definition in pairs(ores) do
 	local ranges = ore_definition.ranges
 	local clusters = ore_definition.clusters
 
-	local drop = MOD_NAME..':'..ore_definition.drop
+	local drop = 'aliska_foudation:'..ore_definition.drop
 
 	local stone_ore = register_ore_node(drop, ore, 2, 'stone')
 	register_generations(stone_ore, 'default:stone', clusters, ranges)
@@ -222,13 +222,13 @@ for _, gem in ipairs(new_gems) do
 		Cluster(scarcities[2], num_ores, size),
 	}
 
-	local drop = MOD_NAME..':gems_'..gem
+	local drop = 'aliska_foudation:gems_'..gem
 	local stone_ore = register_ore_node(drop, gem, 1, 'stone')
 	register_generations(stone_ore, 'default:stone', clusters, ranges)
 end
 
 register_generation(
-	register_ore_node(MOD_NAME..':niter', 'niter', 3, 'silver_sand', 'crumbly'),
+	register_ore_node('aliska_foudation:niter', 'niter', 3, 'silver_sand', 'crumbly'),
 	'default:silver_sand',
 	Cluster(12*12*12, 6, 3),
 	{31000, -256}

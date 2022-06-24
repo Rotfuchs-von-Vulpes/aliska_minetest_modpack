@@ -121,7 +121,7 @@ local function can_dig(pos, player)
 	return true
 end
 
-minetest.register_node(MOD_NAME..':manual_grinder', {
+minetest.register_node('aliska_expanse:manual_grinder', {
 	description = 'Manual Grinder',
 	tiles = {
 		'aliska_grinder_top.png',
@@ -132,7 +132,7 @@ minetest.register_node(MOD_NAME..':manual_grinder', {
 		'aliska_grinder_front.png',
 	},
 	groups = { cracky = 1 },
-	drop = MOD_NAME..':manual_grinder',
+	drop = 'aliska_expanse:manual_grinder',
 	paramtype2 = 'facedir',
 	after_place_node = after_place_node,
 	on_receive_fields = on_receive_fields,
@@ -140,11 +140,11 @@ minetest.register_node(MOD_NAME..':manual_grinder', {
 	allow_metadata_inventory_put = allow_metadata_inventory_put
 })
 
-minetest.register_node(MOD_NAME..':lever', {
+minetest.register_node('aliska_expanse:lever', {
 	description = 'Rotate Lever',
 	tiles = {'aliska_grinder_side.png'},
 	groups = { cracky = 1 },
-	drop = MOD_NAME..':lever',
+	drop = 'aliska_expanse:lever',
 	paramtype2 = "degrotate",
 	drawtype = 'plantlike',
 	walkable = false,
@@ -162,11 +162,17 @@ aliska.register_grinder_craft('default:cobble', 'default:silver_sand')
 aliska.register_grinder_craft('default:desert_cobble', 'default:silver_sand')
 
 aliska.register_craft(
-	MOD_NAME..':manual_grinder',
+	'aliska_expanse:manual_grinder',
 	{ 1, 1, 1, 1, 2, 1, 1, 1, 1 },
-	{ 'default:cobble', FOUDATION..':gems_quartz' }
+	{ 'default:cobble', 'aliska_foudation:gems_quartz' }
 )
 
-aliska.register_grinder_craft('default:coal_lump', FOUDATION..':coal_powder')
-aliska.register_grinder_craft('default:silver_sand', FOUDATION..':silica 9')
-aliska.register_grinder_craft(FOUDATION..':gems_quartz', FOUDATION..':silica')
+local metals =
+	{'iron', 'copper', 'tin', 'gold', 'electrum', 'lead', 'nickel', 'zinc'}
+for _, metal in ipairs(metals) do 
+	aliska.register_grinder_craft('aliska_foudation:'..metal, 'aliska_foudation:'..metal..'_powder 2')
+end
+
+aliska.register_grinder_craft('default:coal_lump', 'aliska_foudation:coal_powder')
+aliska.register_grinder_craft('default:silver_sand', 'aliska_foudation:silica 9')
+aliska.register_grinder_craft('aliska_foudation:gems_quartz', 'aliska_foudation:silica')
