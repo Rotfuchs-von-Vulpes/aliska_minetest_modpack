@@ -164,5 +164,9 @@ aliska.register_grinder_craft('default:desert_cobble', 'default:silver_sand')
 aliska.register_craft(
 	MOD_NAME..':manual_grinder',
 	{ 1, 1, 1, 1, 2, 1, 1, 1, 1 },
-	{ 'default:cobble', MOD_NAME..':gems_quartz' }
+	{ 'default:cobble', FOUDATION..':gems_quartz' }
 )
+
+aliska.register_grinder_craft('default:coal_lump', FOUDATION..':coal_powder')
+aliska.register_grinder_craft('default:silver_sand', FOUDATION..':silica 9')
+aliska.register_grinder_craft(FOUDATION..':gems_quartz', FOUDATION..':silica')

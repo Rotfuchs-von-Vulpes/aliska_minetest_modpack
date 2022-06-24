@@ -93,10 +93,10 @@ local function register_lump(name, description)
 
 	if is_smelting[name] then
 		aliska.register_cooking(lump_name, MOD_NAME..':'..name..'_ingot')
-		aliska.register_grinder_craft(lump_name, MOD_NAME..':'..name..'_powder 2')
-		aliska.register_grinder_craft(MOD_NAME..':'..name..'_ingot', MOD_NAME..':'..name..'_powder')
+		-- aliska.register_grinder_craft(lump_name, MOD_NAME..':'..name..'_powder 2')
+		-- aliska.register_grinder_craft(MOD_NAME..':'..name..'_ingot', MOD_NAME..':'..name..'_powder')
 	elseif name ~= 'titanium' then
-		blast_furnace:register_craft(lump_name, MOD_NAME..':'..name..'_ingot')
+		-- blast_furnace:register_craft(lump_name, MOD_NAME..':'..name..'_ingot')
 	end
 
 	return lump_name
@@ -234,4 +234,4 @@ register_generation(
 	{31000, -256}
 )
 
-blast_furnace:register_craft('default:iron_lump', 'default:steel_ingot')
+-- blast_furnace:register_craft('default:iron_lump', 'default:steel_ingot')

@@ -176,8 +176,20 @@ function aliska.make_brick_tiles(node)
 	local image2 = node..'_side.png'
 
 	return {
-		image1, image1,
+		image2, image2,
 		image2, image2,
 		image1, image1,
 	}
+end
+
+function aliska.register_stair_and_slab(subname, recipeitem, groups, images,
+	desc_stair, desc_slab, sounds, worldaligntex)
+stairs.register_stair(subname, recipeitem, groups, images, desc_stair,
+	sounds, worldaligntex)
+stairs.register_stair_inner(subname, recipeitem, groups, images, "",
+	sounds, worldaligntex, "Inner "..desc_stair)
+stairs.register_stair_outer(subname, recipeitem, groups, images, "",
+	sounds, worldaligntex, "Outer "..desc_stair)
+stairs.register_slab(subname, recipeitem, groups, images, desc_slab,
+	sounds, worldaligntex)
 end

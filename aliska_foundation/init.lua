@@ -14,14 +14,6 @@ local metals = {
 registered_metals = {'steel', 'copper', 'bronze', 'tin', 'gold'}
 registered_metals_set = aliska.Set(registered_metals)
 
-dofile(aliska.path..'/crafting_items.lua')
-dofile(aliska.path..'/machines.lua')
-dofile(aliska.path..'/multinode.lua')
-
-dofile(aliska.path..'/grinder.lua')
-dofile(aliska.path..'/coke_oven.lua')
-dofile(aliska.path..'/blast_furnace.lua')
-
 dofile(aliska.path..'/resources.lua')
 dofile(aliska.path..'/liquids.lua')
 dofile(aliska.path..'/metal.lua')

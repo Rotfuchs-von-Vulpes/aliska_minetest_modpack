@@ -2,27 +2,22 @@ local matrix_replace = aliska.create_node_matrix({
 	{
 		{1, 1, 1},
 		{1, 1, 1},
-		{1, 1, 1}
-	},
-	{
 		{1, 1, 1},
-		{1, 1, 1},
-		{1, 1, 1}
 	},
 	{
 		{1, 2, 1},
 		{2, 3, 2},
-		{1, 2, 1}
+		{1, 2, 1},
 	},
 	{
 		{1, 1, 1},
 		{1, 1, 1},
-		{1, 1, 1}
-	}
+		{1, 1, 1},
+	},
 }, {
-	MOD_NAME..':blast_furnace',
-	MOD_NAME..':blast_furnace_inactive',
-	MOD_NAME..':blast_furnace_center'
+	MOD_NAME..':coke_furnace',
+	MOD_NAME..':coke_furnace_inactive',
+	MOD_NAME..':coke_furnace_center'
 })
 
 local function get_form(pos, fuel_percent, item_percent)
@@ -76,11 +71,11 @@ local function can_dig(pos, player)
 	return true
 end
 
-blast_furnace = aliska.create_combustion_machine(
-	'Blast furnace',
-	MOD_NAME..':blast_furnace_active',
-	MOD_NAME..':blast_furnace_inactive',
-	60,
+local coke_oven = aliska.create_combustion_machine(
+	'Coke oven',
+	MOD_NAME..':coke_furnace_active',
+	MOD_NAME..':coke_furnace_inactive',
+	150,
 	function(pos, node)
 		local positions = {}
 	
@@ -97,11 +92,7 @@ blast_furnace = aliska.create_combustion_machine(
 			minetest.swap_node(pos, {name=node})
 		end
 	end,
-	function(stack)
-		local item = stack:get_name()
-
-		return item == MOD_NAME..':charcoal' or item == MOD_NAME..':coke'
-	end,
+	nil,
 	function(main_pos, fuel_percent, item_percent, text)
 		local meta = minetest.get_meta(main_pos)
 		local p1 = minetest.deserialize(meta:get_string('p1'))
@@ -122,11 +113,11 @@ blast_furnace = aliska.create_combustion_machine(
 	end
 )
 
-blast_furnace:register_craft(MOD_NAME..':iron_ingot', 'default:steel_ingot')
-blast_furnace:register_craft(MOD_NAME..':iron_block', 'default:steelblock')
+coke_oven:register_craft('default:coal_lump', FOUDATION..':coke')
+coke_oven:register_craft('default:coalblock', FOUDATION..':coke_block')
 
 local on_construct, after_dig_node, on_blast = aliska.create_multinode(
-	MOD_NAME..':blast_furnace_bricks', 3, 4, 3, matrix_replace,
+	MOD_NAME..':coke_furnace_bricks', 3, 3, 3, matrix_replace,
 	function(pos, main_pos)
 		local meta = minetest.get_meta(pos)
 
@@ -142,10 +133,10 @@ local on_construct, after_dig_node, on_blast = aliska.create_multinode(
 	end
 )
 
-minetest.register_node(MOD_NAME..':blast_furnace_active', {
-	description = 'Blast Furnace',
+minetest.register_node(MOD_NAME..':coke_furnace_active', {
+	description = 'Coke Oven',
 	tiles = { {
-		image = 'aliska_blast_furnace_active.png',
+		image = 'aliska_coke_furnace_active.png',
 		backface_culling = false,
 		animation = {
 			type = "vertical_frames",
@@ -158,65 +149,58 @@ minetest.register_node(MOD_NAME..':blast_furnace_active', {
 	groups = {cracky=2, not_in_creative_inventory=1},
 	is_ground_content = false,
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = MOD_NAME..':coke_furnace_bricks',
 	after_dig_node = after_dig_node,
 	on_blast = function(pos) end,
 	can_dig = can_dig,
 })
-minetest.register_node(MOD_NAME..':blast_furnace_inactive', {
-	description = 'Blast Furnace',
-	tiles = { 'aliska_blast_furnace_inactive.png' },
+minetest.register_node(MOD_NAME..':coke_furnace_inactive', {
+	description = 'Coke Oven',
+	tiles = { 'aliska_coke_furnace_inactive.png' },
 	groups = {cracky = 3, not_in_creative_inventory=1},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
-	on_rightclick = on_rightclick,
+	drop = MOD_NAME..':coke_furnace_bricks',
 	after_dig_node = after_dig_node,
 	on_blast = function(pos) end,
 	can_dig = can_dig,
 })
-minetest.register_node(MOD_NAME..':blast_furnace', {
-	description = 'Blast Furnace',
-	tiles = aliska.make_brick_tiles('aliska_blast_furnace_bricks'),
+minetest.register_node(MOD_NAME..':coke_furnace', {
+	description = 'Coke Oven',
+	tiles = aliska.make_brick_tiles('aliska_coke_furnace_bricks'),
 	groups = {cracky = 3, not_in_creative_inventory=1},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = MOD_NAME..':coke_furnace_bricks',
 	after_dig_node = after_dig_node,
 	on_blast = function(pos) end,
 	can_dig = can_dig,
 })
-minetest.register_node(MOD_NAME..':blast_furnace_center', {
-	description = 'Blast Furnace',
-	tiles = aliska.make_brick_tiles('aliska_blast_furnace_bricks'),
+minetest.register_node(MOD_NAME..':coke_furnace_center', {
+	description = 'Coke Oven',
+	tiles = aliska.make_brick_tiles('aliska_coke_furnace_bricks'),
 	groups = {cracky = 3, not_in_creative_inventory=1},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = MOD_NAME..':coke_furnace_bricks',
 
 	after_dig_node = after_dig_node,
 
-	can_dig = blast_furnace.can_dig,
+	can_dig = coke_oven.can_dig,
 
-	on_timer = blast_furnace:get_node_timer(),
+	on_timer = coke_oven:get_node_timer(),
 
-	on_metadata_inventory_move = blast_furnace.inventory_interaction,
-	on_metadata_inventory_put = blast_furnace.inventory_interaction,
-	on_metadata_inventory_take = blast_furnace.inventory_interaction,
+	on_metadata_inventory_move = coke_oven.inventory_interaction,
+	on_metadata_inventory_put = coke_oven.inventory_interaction,
+	on_metadata_inventory_take = coke_oven.inventory_interaction,
 	on_blast = on_blast,
 	
-	allow_metadata_inventory_put = blast_furnace.allow_metadata_inventory_put,
-	allow_metadata_inventory_move = blast_furnace.allow_metadata_inventory_move,
+	allow_metadata_inventory_put = coke_oven.allow_metadata_inventory_put,
+	allow_metadata_inventory_move = coke_oven.allow_metadata_inventory_move,
 })
 
-minetest.register_node(MOD_NAME..':blast_furnace_bricks', {
-	description = 'Blast Furnace Bricks',
-	tiles = aliska.make_brick_tiles('aliska_blast_furnace_bricks'),
+minetest.register_node(MOD_NAME..':coke_furnace_bricks', {
+	description = 'Coke Furnace Bricks',
+	tiles = aliska.make_brick_tiles('aliska_coke_furnace_bricks'),
 	groups = {cracky = 3},
 	sounds = default.node_sound_stone_defaults(),
-	drop = MOD_NAME..':blast_furnace_bricks',
+	drop = MOD_NAME..':coke_furnace_bricks',
 	on_construct = on_construct
 })
-
-aliska.register_craft(
-	MOD_NAME..':blast_furnace_bricks 3',
-	{1, 2, 1, 2, 1, 2, 1, 2, 1},
-	{'group:sand', MOD_NAME..':coke_furnace_bricks'}
-)

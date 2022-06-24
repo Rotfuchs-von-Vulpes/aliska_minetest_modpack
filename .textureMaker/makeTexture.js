@@ -166,11 +166,11 @@ function replaceColors(inputBuffer, metal, any) {
 }
 
 function readImage(path) {
-	return png.decode(fs.readFileSync(path)).data;
+	return png.decode(fs.readFileSync(path));
 }
 
-function writeImage(path, imageBuffer) {
-	fs.writeFileSync(path, png.encode({width: 16, height: 16, data: imageBuffer}));
+function writeImage(path, imageBuffer, width, height) {
+	fs.writeFileSync(path, png.encode({width, height, data: imageBuffer}));
 }
 
 function makeItemTextures(metals, items, colors) {
@@ -178,7 +178,7 @@ function makeItemTextures(metals, items, colors) {
 		for (let item of items) {
 			let imageBuffer = replaceAnyColors(item.data, colors[metal], colors['any']);
 		
-			writeImage(`./textures/output/aliska_${metal}_${item.name}.png`, imageBuffer);
+			writeImage(`./textures/output/aliska_${metal}_${item.name}.png`, imageBuffer, 16, 16);
 	
 			console.log(`${metal} ${item.name} saved.`);
 		}
@@ -196,78 +196,105 @@ function makeColorsJSON(metals) {
 	writeColorsJson('./metals.json', colors);
 }
 
-function makeFluidPalette(path, alpha, outputPath) {
+
+function contrastOne(byte) {
+	let a = byte + 128;
+
+	return 143*a / (Math.sqrt(a*a - 4096)) + 128
+}
+
+function contrast(color) {
+	color[0] = contrastOne(color[0]);
+	color[1] = contrastOne(color[1]);
+	color[2] = contrastOne(color[2]);
+
+	return color
+}
+
+function dataForEach(data, func) {
 	let colorStack = [];
 	let imageBuffer = [];
-	let data = png.decode(fs.readFileSync(path));
 
-	for (let n of data.data) {
+	for (let n of data) {
 		colorStack.push(n);
 
 		if (colorStack.length >= 4) {
-			colorStack[3] = alpha;
+			colorStack = func(colorStack)
 			imageBuffer.push(...colorStack);
 			colorStack = [];
 		}
 	}
 
-	fs.writeFileSync(outputPath, png.encode({
-		width: data.width,
-		height: data.height,
-		data: imageBuffer
-	}));
+	return imageBuffer
+}
+
+function makeContrast(path, outputPath) {
+	let data = readImage(path);
+	let imageBuffer = dataForEach(data.data, (stack) => {
+		stack = contrast(stack);
+
+		return stack;
+	})
+
+	writeImage(outputPath, imageBuffer, data.width, data.height)
+}
+
+function makeTransparency(path, alpha, outputPath) {
+	let data = readImage(path);
+	let imageBuffer = dataForEach(data.data, (stack) => {
+		stack[3] = alpha;
+
+		return stack;
+	})
+
+	writeImage(outputPath, imageBuffer, data.width, data.height)
 }
 
 // code texturing here
 
-const colors = readColorsInJSON('./metals.json');
-const metals = [
-	'silver',
-	'bronze',
-	'copper',
-	'brass',
-	'steel',
-	'gold',
-	'lead',
-	'zinc',
-	'iron',
-	'tin',
-	'aluminium',
-	'nickel',
-	'titanium',
-	'electrum',
-	'monel',
-	'nitinol',
-	'invar',
-];
-let items = [
-	// createItem(readImage('./textures/aliska_raw_any_ore.png'), 'ore'),
-	// createItem(readImage('./textures/items/aliska_any_gear.png'), 'gear'),
-	createItem(readImage('./textures/items/aliska_any_block.png'), 'block'),
-	// createItem(readImage('./textures/items/aliska_any_ingot.png'), 'ingot'),
-	// createItem(readImage('./textures/items/aliska_any_powder.png'), 'powder'),
-	// createItem(readImage('./textures/items/aliska_any_tiny_powder.png'), 'tiny_powder'),
-	// createItem(readImage('./textures/items/aliska_any_nugget.png'), 'nugget'),
-	// createItem(readImage('./textures/items/aliska_any_sword.png'), 'sword'),
-	// createItem(readImage('./textures/items/aliska_any_pickaxe.png'), 'pickaxe'),
-	// createItem(readImage('./textures/items/aliska_any_shovel.png'), 'shovel'),
-	// createItem(readImage('./textures/items/aliska_any_hoe.png'), 'hoe'),
-	// createItem(readImage('./textures/items/aliska_any_axe.png'), 'axe'),
-	// createItem(readImage('./textures/items/aliska_any_plate.png'), 'plate'),
-]
+// const colors = readColorsInJSON('./metals.json');
+// const metals = [
+// 	'silver',
+// 	'bronze',
+// 	'copper',
+// 	'brass',
+// 	'steel',
+// 	'gold',
+// 	'lead',
+// 	'zinc',
+// 	'iron',
+// 	'tin',
+// 	'aluminium',
+// 	'nickel',
+// 	'titanium',
+// 	'electrum',
+// 	'monel',
+// 	'nitinol',
+// 	'invar',
+// ];
+// let items = [
+// 	// createItem(readImage('./textures/aliska_raw_any_ore.png'), 'ore'),
+// 	// createItem(readImage('./textures/items/aliska_any_gear.png'), 'gear'),
+// 	createItem(readImage('./textures/items/aliska_any_block.png'), 'block'),
+// 	// createItem(readImage('./textures/items/aliska_any_ingot.png'), 'ingot'),
+// 	// createItem(readImage('./textures/items/aliska_any_powder.png'), 'powder'),
+// 	// createItem(readImage('./textures/items/aliska_any_tiny_powder.png'), 'tiny_powder'),
+// 	// createItem(readImage('./textures/items/aliska_any_nugget.png'), 'nugget'),
+// 	// createItem(readImage('./textures/items/aliska_any_sword.png'), 'sword'),
+// 	// createItem(readImage('./textures/items/aliska_any_pickaxe.png'), 'pickaxe'),
+// 	// createItem(readImage('./textures/items/aliska_any_shovel.png'), 'shovel'),
+// 	// createItem(readImage('./textures/items/aliska_any_hoe.png'), 'hoe'),
+// 	// createItem(readImage('./textures/items/aliska_any_axe.png'), 'axe'),
+// 	// createItem(readImage('./textures/items/aliska_any_plate.png'), 'plate'),
+// ]
 
 // makeColorsJSON(metals);
-makeItemTextures(metals, items, colors);
+// makeItemTextures(metals, items, colors);
 
-// makeFluidPalette(
-// 	'./textures/palettes/creosote_oil.png',
-// 	191,
-// 	'./textures/output/creosote_oil.png'
-// );
-// makeFluidPalette(
-// 	'./textures/palettes/creosote_oil_flowing.png',
-// 	191,
-// 	'./textures/output/creosote_oil_flowing.png'
-// );
+makeTransparency(
+	'./textures/items/aliska_polished2.png',
+	128,
+	'./textures/output/aliska_polished2.png'
+);
 
 console.log('feito.');

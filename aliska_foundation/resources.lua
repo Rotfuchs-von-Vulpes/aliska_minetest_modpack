@@ -7,6 +7,10 @@ minetest.register_on_mods_loaded(function()
 	})
 end)
 
+minetest.register_craftitem(MOD_NAME..':coke', {
+	description = 'Coal Coke',
+	inventory_image = 'aliska_coke.png'
+})
 minetest.register_craftitem(MOD_NAME..':charcoal', {
 	description = 'Charcoal',
 	inventory_image = 'aliska_charcoal.png'
@@ -55,19 +59,7 @@ minetest.register_node(MOD_NAME..":treated_wood", {
 })
 
 if minetest.get_modpath('stairs') then
-	local function my_register_stair_and_slab(subname, recipeitem, groups, images,
-			desc_stair, desc_slab, sounds, worldaligntex)
-		stairs.register_stair(subname, recipeitem, groups, images, desc_stair,
-			sounds, worldaligntex)
-		stairs.register_stair_inner(subname, recipeitem, groups, images, "",
-			sounds, worldaligntex, "Inner "..desc_stair)
-		stairs.register_stair_outer(subname, recipeitem, groups, images, "",
-			sounds, worldaligntex, "Outer "..desc_stair)
-		stairs.register_slab(subname, recipeitem, groups, images, desc_slab,
-			sounds, worldaligntex)
-	end
-
-	my_register_stair_and_slab(
+	aliska.register_stair_and_slab(
 		"treated_wood",
 		MOD_NAME..":treated_wood",
 		{choppy = 3, oddly_breakable_by_hand = 2, flammable = 3},
@@ -79,6 +71,12 @@ if minetest.get_modpath('stairs') then
 	)
 end
 
+
+minetest.register_craft{
+	type = 'fuel',
+	recipe = MOD_NAME..':coke',
+	burntime = 160,
+}
 minetest.register_craft{
 	type = 'fuel',
 	recipe = MOD_NAME..':charcoal',
@@ -128,13 +126,36 @@ minetest.override_item(MOD_NAME..':niter', {
 		local node = minetest.get_node(pos).name
 		if minetest.registered_nodes[node].groups.sapling then
 			minetest.get_node_timer(pos):start(0)
-			minetest.debug('foi! eu acho...')
 		end
 	end,
 })
 
+minetest.register_node(MOD_NAME..':coke_block', {
+	description = 'Coal Coke Block',
+	tiles = { 'aliska_coke_block.png' },
+	drop = MOD_NAME..':coke_block',
+	groups = {cracky = 3},
+	is_ground_content = false,
+	sounds = default.node_sound_stone_defaults(),
+})
+
 aliska.register_cooking('group:tree', MOD_NAME..':charcoal')
 aliska.register_cooking(MOD_NAME..':silica', MOD_NAME..':gems_quartz')
+aliska.register_craft(
+	MOD_NAME..':coke_furnace_bricks 3',
+	{1, 2, 1, 2, 1, 2, 1, 2, 1},
+	{'group:sand', 'default:clay_brick'}
+)
+aliska.register_craft(
+	MOD_NAME..':coke_block',
+	{1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{ MOD_NAME..':coke' }
+)
+aliska.register_craft(
+	MOD_NAME..':coke 9',
+	{1},
+	{ MOD_NAME..':coke_block' }
+)
 aliska.register_craft(
 	'default:torch 4',
 	{ 1, 0, 2, 0 },
@@ -165,6 +186,3 @@ aliska.register_craft(
 	{1},
 	{ MOD_NAME..':charcoal_block' }
 )
-aliska.register_grinder_craft('default:coal_lump', MOD_NAME..':coal_powder')
-aliska.register_grinder_craft('default:silver_sand', MOD_NAME..':silica 9')
-aliska.register_grinder_craft(MOD_NAME..':gems_quartz', MOD_NAME..':silica')

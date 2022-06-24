@@ -26,7 +26,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	craft_inv:set_list('craft', list)
 end)
 
-local function register_crafting_tool(item_name, recipe_definition)
+function aliska.register_crafting_tool(item_name, recipe_definition)
 	minetest.register_tool(MOD_NAME..':'..item_name, {
 		description = c(item_name),
 		inventory_image = 'aliska_'..item_name..'.png',
@@ -51,8 +51,3 @@ local function register_crafting_tool(item_name, recipe_definition)
 		craft_tools_map[ItemStack(output):get_name()] = MOD_NAME..':'..item_name
 	end
 end
-
-aliska.register_hammer_craft = register_crafting_tool('forge_hammer', {
-	{ 0, 1, 1, 2, 2, 1, 0, 1, 1 },
-	{ MOD_NAME..':iron_ingot', 'group:stick' },
-})

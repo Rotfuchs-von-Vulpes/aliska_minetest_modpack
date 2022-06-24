@@ -72,7 +72,7 @@ function aliska.register_metal(metal_name)
 	aliska.register_cooking(items_name['tiny_powder'], items_name['nugget'])
 	aliska.register_cooking(items_name['powder'], items_name['ingot'])
 
-	aliska.register_hammer_craft(items_name['ingot'], items_name['plate'])
+	-- aliska.register_hammer_craft(items_name['ingot'], items_name['plate'])
 
 	return items_name
 end
