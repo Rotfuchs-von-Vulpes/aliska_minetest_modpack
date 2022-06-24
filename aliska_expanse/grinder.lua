@@ -167,10 +167,18 @@ aliska.register_craft(
 	{ 'default:cobble', 'aliska_foudation:gems_quartz' }
 )
 
-local metals =
-	{'iron', 'copper', 'tin', 'gold', 'electrum', 'lead', 'nickel', 'zinc'}
-for _, metal in ipairs(metals) do 
-	aliska.register_grinder_craft('aliska_foudation:'..metal, 'aliska_foudation:'..metal..'_powder 2')
+local metals = {
+	iron = 'aliska_foudation:iron_lump',
+	copper = 'default:copper_lump',
+	tin = 'default:tin_lump',
+	gold = 'default:gold_lump',
+	electrum = 'aliska_foudation:electrum_lump',
+	lead = 'aliska_foudation:lead_lump',
+	nickel = 'aliska_foudation:nickel_lump',
+	zinc = 'aliska_foudation:zinc_lump'
+}
+for metal, raw in pairs(metals) do 
+	aliska.register_grinder_craft(raw, 'aliska_foudation:'..metal..'_powder 2')
 end
 
 aliska.register_grinder_craft('default:coal_lump', 'aliska_foudation:coal_powder')
