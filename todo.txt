@@ -2,9 +2,30 @@ iron: *calcium carbonate
 lead: *calcium carbonate
 gold: *borax, *silica, *salt
 aluminium: *fluorite, *sodium hidroxide
+tin: *nothing
 
 
-*treated wood things
+
+manual -> wood 
+combustible -> cobblestone
+farm -> plastik
+generator -> iron
+low energy -> tin 
+medium energy -> bronze
+high energy -> steel
+nuclear -> zircalloy
+roketry -> zinc
+
+
+polished: 
+*monzonite
+*diorite
+*andesite
+*rhyolite
+*granite
+*gabbro
+*gneiss
+
 
 *mud, *clay, *red mud
 *shale
