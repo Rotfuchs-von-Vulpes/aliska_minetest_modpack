@@ -29,15 +29,3 @@ for _, metal in ipairs(metals) do
 
 	aliska.register_tools(metal, items)
 end
-
-minetest.register_chatcommand('that', {
-	func = function(name)
-		local player = minetest.get_player_by_name(name)
-		
-		minetest.chat_send_all(
-			aliska.serialize(
-				minetest.registered_tools[player:get_wielded_item():get_name()]
-			)
-		)
-	end
-})

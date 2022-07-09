@@ -131,28 +131,13 @@ minetest.register_node('aliska_expanse:manual_grinder', {
 		'aliska_grinder_side.png',
 		'aliska_grinder_front.png',
 	},
-	groups = { cracky = 1 },
+	groups = { cracky = 1, aliska_receptor_kinetics = 1 },
 	drop = 'aliska_expanse:manual_grinder',
 	paramtype2 = 'facedir',
 	after_place_node = after_place_node,
 	on_receive_fields = on_receive_fields,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_put = allow_metadata_inventory_put
-})
-
-minetest.register_node('aliska_expanse:lever', {
-	description = 'Rotate Lever',
-	tiles = {'aliska_grinder_side.png'},
-	groups = { cracky = 1 },
-	drop = 'aliska_expanse:lever',
-	paramtype2 = "degrotate",
-	drawtype = 'plantlike',
-	walkable = false,
-	sunlight_propagates = true,
-	on_rightclick = function(pos, node)
-		node.param2 = node.param2 + 10
-		minetest.swap_node(pos, node)
-	end
 })
 
 aliska.register_grinder_craft('default:gravel', 'default:flint')

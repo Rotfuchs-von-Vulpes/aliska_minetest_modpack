@@ -13,11 +13,11 @@ aliska.register_hammer_craft = aliska.register_crafting_tool('forge_hammer', {
 
 for _, metal in ipairs(metals) do
 	aliska.register_hammer_craft(
-		FOUDATION..':'..metal..'_ingot', FOUDATION..':'..metal..'_plate'
+		'aliska_foudation:'..metal..'_ingot', 'aliska_foudation:'..metal..'_plate'
 	)
 end
 for _, metal in ipairs(registered_metals) do
 	aliska.register_hammer_craft(
-		'default:'..metal..'_ingot', FOUDATION..':'..metal..'_plate'
+		'default:'..metal..'_ingot', 'aliska_foudation:'..metal..'_plate'
 	)
 end

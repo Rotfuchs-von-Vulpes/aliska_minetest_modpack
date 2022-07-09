@@ -116,10 +116,14 @@ end
 local function register_ore_node(drop, name, mining_level, where_in, mining_type)
 	local ore_name = 'aliska_foudation:'..where_in..'_with_'..name
 	local mining_type = mining_type or 'cracky'
-	local falling 
+	local falling
+	local sounds
 
 	if mining_type == 'crumbly' then
 		falling = 1
+		sounds = default.node_sound_sand_defaults()
+	else
+		sounds = default.node_sound_stone_defaults()
 	end
 
 	minetest.register_node(ore_name, {
@@ -127,10 +131,8 @@ local function register_ore_node(drop, name, mining_level, where_in, mining_type
 		tiles = { 'default_'..where_in..'.png^aliska_raw_'..name..'_ore.png' },
 		groups = { [mining_type] = mining_level, falling_node = falling },
 		drop = drop,
-		sounds = default.node_sound_stone_defaults(),
+		sounds = sounds,
 	})
-
-	return ore_name
 end
 
 local function atualize_ore_node(name)
@@ -139,99 +141,27 @@ local function atualize_ore_node(name)
 	})
 end
 
-local function register_generation(ore, wherein, cluster, range)
-	minetest.register_ore{
-		ore_type = 'scatter',
-		ore = ore,
-		wherein = wherein,
-		clust_scarcity = cluster.scarcity,
-		clust_num_ores = cluster.num_ores,
-		clust_size = cluster.size,
-		y_max = range[1],
-		y_min = range[2],
-	}
-end
-
-local function register_generations(ore, wherein, clusters, ranges)
-	for i, range in ipairs(ranges) do
-		register_generation(ore, wherein, clusters[i], range)
-	end
-end
-
-for metal, ore_definition in pairs(new_metals) do 
-	local ranges = { { 0, -31000 }, { 64, -31000 }, { 31000, 0 } }
-	local scarcity = ore_definition.scarcity
-	local num_ores = ore_definition.num_ores
-	local size = ore_definition.size
-	local clusters = {
-		Cluster(scarcity*scarcity*scarcity, num_ores, size),
-		Cluster(scarcity*scarcity*scarcity*scarcity, 1.5*num_ores, size+1),
-		Cluster(scarcity*scarcity*scarcity*scarcity*scarcity, 0.5*num_ores, size),
-	}
-
+for metal, ore_definition in pairs(new_metals) do
 	local drop = register_lump(metal, ore_definition.lump)
-
-	local stone_ore = register_ore_node(drop, metal, 2, 'stone')
-	register_generations(stone_ore, 'default:stone', clusters, ranges)
-
-	local desert_ore = register_ore_node(drop, metal, 2, 'desert_stone')
-	register_generation(desert_ore, 'default:desert_stone', clusters[2], ranges[2])
-	register_generation(desert_ore, 'default:desert_stone', clusters[3], ranges[3])
+	register_ore_node(drop, metal, 2, 'stone')
+	register_ore_node(drop, metal, 2, 'desert_stone')
 end
 
 for metal, ore_definition in pairs(old_metals) do
-	local range = { 31000, 0 }
-	local desert_range = { 31000, -256}
-	local scarcity = ore_definition.scarcity + 4
-	local num_ores = ore_definition.num_ores
-	local size = ore_definition.size
-	local cluster = Cluster(scarcity*scarcity*scarcity, num_ores, size)
-
-	atualize_ore_node(metal)
-
 	local drop = atualize_lump(metal, ore_definition.lump)
-	local desert_ore = register_ore_node(drop, metal, 2, 'desert_stone')
-	register_generation(desert_ore, 'default:desert_stone', cluster, desert_range)
-	register_generation('default:stone_with_'..metal, 'default:stone', cluster, range)
+	register_ore_node(drop, metal, 2, 'desert_stone')
+	atualize_ore_node(metal)
 end
 
 for ore, ore_definition in pairs(ores) do
-	local ranges = ore_definition.ranges
-	local clusters = ore_definition.clusters
-
 	local drop = 'aliska_foudation:'..ore_definition.drop
-
-	local stone_ore = register_ore_node(drop, ore, 2, 'stone')
-	register_generations(stone_ore, 'default:stone', clusters, ranges)
-
-	for _, range in ipairs(ranges) do
-		if range[1] > -256 then
-			local desert_ore = register_ore_node(drop, ore, 2, 'desert_stone')
-			register_generation(desert_ore, 'default:desert_stone', clusters[#ranges], ranges[#ranges])
-		end
-	end
+	register_ore_node(drop, ore, 2, 'stone')
+	register_ore_node(drop, ore, 2, 'desert_stone')
 end
 
 for _, gem in ipairs(new_gems) do
-	local ranges = {{-1024, -2047}, {-2048, -31000}}
-	local scarcities = {17*17*17, 15*15*15}
-	local num_ores = 4
-	local size = 3
-	local clusters = {
-		Cluster(scarcities[1], num_ores, size),
-		Cluster(scarcities[2], num_ores, size),
-	}
-
 	local drop = 'aliska_foudation:gems_'..gem
-	local stone_ore = register_ore_node(drop, gem, 1, 'stone')
-	register_generations(stone_ore, 'default:stone', clusters, ranges)
+	register_ore_node(drop, gem, 1, 'stone')
 end
 
-register_generation(
-	register_ore_node('aliska_foudation:niter', 'niter', 3, 'silver_sand', 'crumbly'),
-	'default:silver_sand',
-	Cluster(12*12*12, 6, 3),
-	{31000, -256}
-)
-
--- blast_furnace:register_craft('default:iron_lump', 'default:steel_ingot')
+register_ore_node('aliska_foudation:niter', 'niter', 3, 'silver_sand', 'crumbly')
