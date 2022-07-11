@@ -167,5 +167,9 @@ for metal, raw in pairs(metals) do
 end
 
 aliska.register_grinder_craft('default:coal_lump', 'aliska_foudation:coal_powder')
-aliska.register_grinder_craft('default:silver_sand', 'aliska_foudation:silica 9')
-aliska.register_grinder_craft('aliska_foudation:gems_quartz', 'aliska_foudation:silica')
+aliska.register_grinder_craft(
+	'default:silver_sand', 'aliska_foudation:silica_powder 9'
+)
+aliska.register_grinder_craft(
+	'aliska_foudation:gems_quartz', 'aliska_foudation:silica_powder'
+)

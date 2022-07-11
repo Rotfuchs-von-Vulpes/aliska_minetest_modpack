@@ -23,6 +23,10 @@ minetest.register_craftitem('aliska_foudation:sulfur', {
 	description = 'Sulfur',
 	inventory_image = 'aliska_sulfur.png'
 })
+minetest.register_craftitem('aliska_foudation:silica_powder', {
+	description = 'Silica Powder',
+	inventory_image = 'aliska_silica_powder.png'
+})
 minetest.register_craftitem('aliska_foudation:silica', {
 	description = 'Silica',
 	inventory_image = 'aliska_silica.png'
@@ -140,6 +144,7 @@ minetest.register_node('aliska_foudation:coke_block', {
 })
 
 aliska.register_cooking('group:tree', 'aliska_foudation:charcoal')
+aliska.register_cooking('aliska_foudation:silica_powder', 'aliska_foudation:silica')
 aliska.register_cooking('aliska_foudation:silica', 'aliska_foudation:gems_quartz')
 aliska.register_craft(
 	'aliska_foudation:coke_furnace_bricks 3',

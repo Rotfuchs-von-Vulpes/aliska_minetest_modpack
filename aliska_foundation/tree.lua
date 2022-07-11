@@ -130,13 +130,13 @@ minetest.register_tool('aliska_foudation:tree_tap', {
 			list[idx]:replace(itemstack)
 			minetest.after(0, function()
 				inv:set_list('main', list)
+				
+				if inv:room_for_item('main', stack) then
+					inv:add_item('main', ItemStack(stack))
+				else
+					minetest.item_drop(ItemStack(stack), player, player:get_pos())
+				end
 			end)
-
-			if inv:room_for_item('main', stack) then
-				inv:add_item('main', stack)
-			else
-				minetest.item_drop(ItemStack(stack), player, player:get_pos())
-			end
 		end
 	end,
 })
