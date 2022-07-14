@@ -1,5 +1,5 @@
 local polished = {'andesite', 'diorite', 'gabbro', 'granite', 'monzonite',
-'rhyolite', 'gneiss'}
+'rhyolite', 'gneiss', 'marble', 'slate'}
 
 local function create_def(description, tile, groups)
 	return {
@@ -97,9 +97,17 @@ local function register_rock(name, description, tile, groups, sounds)
 	register_node('rocks_'..name, description, {tile..'.png'}, groups, sounds)
 end
 
-local function register_chiseled_rock(name)
+local function register_chiseled_rock(name, is_symetric)
+	local tiles 
+
+	if is_bricks then
+		tiles = 'aliska_'..name..'.png'
+	else
+		tiles = aliska.make_brick_tiles('aliska_'..name)
+	end
+
 	return register_node('rocks_chiseled_'..name, aliska.c(name),
-		aliska.make_brick_tiles('aliska_'..name),
+		tiles,
 		{cracky=3}, default.node_sound_stone_defaults())
 end
 

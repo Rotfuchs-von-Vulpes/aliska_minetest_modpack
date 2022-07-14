@@ -45,16 +45,6 @@ minetest.register_node('aliska_foudation:rubber_tree_without_latex', {
 	drop = 'aliska_foudation:rubber_tree',
 })
 
-minetest.register_node('aliska_foudation:rubber_wood', {
-	description = 'Rubber Wood Planks',
-	paramtype2 = 'facedir',
-	place_param2 = 0,
-	tiles = {'aliska_rubber_wood.png'},
-	is_ground_content = false,
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2, wood = 1},
-	sounds = default.node_sound_wood_defaults(),
-})
-
 minetest.register_node('aliska_foudation:rubber_leaves', {
 	description = 'Rubber Tree Leaves',
 	drawtype = 'allfaces_optional',
@@ -170,7 +160,6 @@ minetest.register_lbm({
 })
 
 aliska.register_cooking('aliska_foudation:latex', 'aliska_foudation:rubber')
-aliska.register_craft('aliska_foudation:rubber_wood 4', {1}, {'aliska_foudation:rubber_tree'})
 aliska.register_craft(
 	'aliska_foudation:tree_tap',
 	{0, 1, 0, 1, 1, 1, 1, 0, 0},

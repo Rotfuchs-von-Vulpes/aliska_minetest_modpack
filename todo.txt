@@ -25,6 +25,8 @@ polished:
 *granite
 *gabbro
 *gneiss
+*marble
+*slate
 
 
 *mud, *clay, *red mud
