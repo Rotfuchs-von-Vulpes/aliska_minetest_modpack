@@ -153,13 +153,14 @@ minetest.register_abm({
 
 minetest.register_lbm({
 	name = "aliska_foudation:convert_saplings_to_node_timer",
-	nodenames = {"aliska_foudation:sapling"},
+	nodenames = {"aliska_foudation:rubber_sapling"},
 	action = function(pos)
 		minetest.get_node_timer(pos):start(math.random(300, 1500))
 	end
 })
 
 aliska.register_cooking('aliska_foudation:latex', 'aliska_foudation:rubber')
+aliska.register_cooking('aliska_foudation:rubber_tree', 'default:jungletree')
 aliska.register_craft(
 	'aliska_foudation:tree_tap',
 	{0, 1, 0, 1, 1, 1, 1, 0, 0},

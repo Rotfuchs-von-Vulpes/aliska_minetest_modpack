@@ -1,3 +1,11 @@
+
+-- energy = none|fuel|liquid_fuel|electricity|solar
+-- src = none,item,fluid,electricity
+-- dst = item,fluid,electricity
+function aliska.create_machine(name, def)
+
+end
+
 function aliska.create_combustion_machine(
 	name,
 	machine_active,
