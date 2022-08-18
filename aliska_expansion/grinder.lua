@@ -121,7 +121,7 @@ local function can_dig(pos, player)
 	return true
 end
 
-minetest.register_node('aliska_expanse:manual_grinder', {
+minetest.register_node('aliska_expansion:manual_grinder', {
 	description = 'Manual Grinder',
 	tiles = {
 		'aliska_grinder_top.png',
@@ -132,7 +132,7 @@ minetest.register_node('aliska_expanse:manual_grinder', {
 		'aliska_grinder_front.png',
 	},
 	groups = { cracky = 1, aliska_receptor_kinetics = 1 },
-	drop = 'aliska_expanse:manual_grinder',
+	drop = 'aliska_expansion:manual_grinder',
 	paramtype2 = 'facedir',
 	after_place_node = after_place_node,
 	on_receive_fields = on_receive_fields,
@@ -147,7 +147,7 @@ aliska.register_grinder_craft('default:cobble', 'default:silver_sand')
 aliska.register_grinder_craft('default:desert_cobble', 'default:silver_sand')
 
 aliska.register_craft(
-	'aliska_expanse:manual_grinder',
+	'aliska_expansion:manual_grinder',
 	{ 1, 1, 1, 1, 2, 1, 1, 1, 1 },
 	{ 'default:cobble', 'aliska_foudation:gems_quartz' }
 )

@@ -1,4 +1,4 @@
-minetest.register_node('aliska_expanse:hand_crank', {
+minetest.register_node('aliska_expansion:hand_crank', {
 	description = 'Hand Crank',
 	tiles = {'aliska_hand_crank.png'},
 	inventory_image = 'aliska_hand_crank.png',

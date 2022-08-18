@@ -1,9 +1,145 @@
+function to_obj(arr)
+	local obj = {}
 
--- energy = none|fuel|liquid_fuel|electricity|solar
--- src = none,item,fluid,electricity
--- dst = item,fluid,electricity
-function aliska.create_machine(name, def)
+	for _, key in ipairs(arr) do
+		obj[key] = {}
+	end
 
+	return obj
+end
+
+function separate(stack)
+	local arr = {}
+
+	stack:gsub('%S+', function(str)
+		arr[#arr+1] = str
+	end)
+
+	return arr
+end
+
+function Group(item)
+	local obj = {
+		arr = {},
+		set = {},
+		add = function(self, item)
+			if self.set[item] then
+				return
+			end
+
+			self.arr[#self.arr+1] = item
+			self.set[item] = true
+		end
+	}
+
+	if item then obj:add(item) end
+
+	return obj
+end
+
+aliska.machines_methods = {
+	combustion_on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+
+		inv:set_list('src', 1)
+		inv:set_list('dst', 1)
+		inv:set_list('fuel', 1)
+	end,
+}
+
+function aliska.create_process_machine(name, def)
+	local machine = {
+		active = def.active,
+		inactive = def.inactive,
+		recipes = {},
+		outputs = {},
+		recipe_map = {},
+		times = {},
+	}
+
+	local swap_node = def.swap_node or function(pos, name)
+		local node = minetest.get_node(pos)
+		if node.name == name then
+			return
+		end
+		node.name = name
+		minetest.swap_node(pos, node)
+	end
+
+	function machine:register_craft(input, output, time)
+		time = time or def.default_time
+		idx = #self.recipes + 1
+		self.recipes[idx] = {}
+		
+		for listname, list in pairs(input) do
+			local items = {}
+			local count = {}
+
+			for _, stack in ipairs(list) do
+				local arr = separate(stack)
+				local item, num = arr[1], arr[2]
+
+				items[#items+1], count[item] = item, num
+
+				if self.recipe_map[listname][item] then
+					local len = #self.recipe_map[listname][item]
+					self.recipe_map[listname][item][len+1] = idx
+				else
+					self.recipe_map[listname][item] = {idx}
+				end
+			end
+
+
+			self.recipes[idx][listname] = {items = items, count = count}
+		end
+
+		self.outputs[idx] = output
+		self.times[idx] = time
+	end
+
+	function machine:match_craft(input)
+		local idxs = {}
+		for listname, list in pairs(input) do
+			for _, item in ipairs(list) do
+				minetest.debug(item)
+			end
+		end
+
+		return false
+	end
+
+	machine.on_construct = def.on_construct
+
+	machine.can_dig = def.can_dig
+	
+	machine.allow_metadata_inventory_put = def.allow_metadata_inventory_put
+
+	function machine.allow_metadata_inventory_move(pos,
+		from_list, from_index, to_list, to_index)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		local stack = inv:get_stack(from_list, from_index)
+	
+		return machine.allow_metadata_inventory_put(pos, to_list, to_index, stack)
+	end
+
+	function machine.inventory_interaction(pos)
+		minetest.get_node_timer(pos):start(1.0)
+	end
+
+	function machine:get_node_timer()
+		return function(pos)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			
+			minetest.debug(aliska.serialize(inv))
+
+			return false
+		end
+	end
+
+	return machine
 end
 
 function aliska.create_combustion_machine(
@@ -33,7 +169,7 @@ function aliska.create_combustion_machine(
 
 	is_fuel = is_fuel or function(stack)
 		return minetest.get_craft_result({
-			method="fuel", width=1, items={stack}
+			method='fuel', width=1, items={stack}
 		}).time ~= 0
 	end
 
@@ -73,22 +209,20 @@ function aliska.create_combustion_machine(
 
 	function machine.allow_metadata_inventory_put(pos, listname, index, stack)
 		local item = stack:get_name()
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
 	
-		if listname == "fuel" then
+		if listname == 'fuel' then
 			if is_fuel(stack) then
 				return stack:get_count()
 			else
 				return 0
 			end
-		elseif listname == "src" then
+		elseif listname == 'src' then
 			if machine.recipes[item] then
 				return stack:get_count()
 			else
 				return 0 
 			end
-		elseif listname == "dst" then
+		else
 			return 0
 		end
 	end
@@ -170,7 +304,7 @@ function aliska.create_combustion_machine(
 		
 			function start_fuel()
 				local fuel, afterfuel = minetest.get_craft_result({
-					method = "fuel", width = 1, items = fuellist
+					method = 'fuel', width = 1, items = fuellist
 				})
 				if fuel.time ~= 0 then
 					fuel_time = fuel.time
@@ -246,3 +380,47 @@ function aliska.create_combustion_machine(
 
 	return machine
 end
+
+local function get_form()
+	return 'size[9,8;]'..
+	'list[context;src;2.75,1;1,1;0]'..
+	'list[context;src;4,0.5;1,1;1]'..
+	'list[context;src;5.25,1;1,1;2]'..
+	'list[context;dst;4,2.5;1,1;]'..
+	'list[current_player;main;0,4;9,4;]'..
+	'listring[context;dst]'..
+	'listring[current_player;main]'..
+	'listring[context;src]'..
+	'listring[current_player;main]'..
+	default.get_hotbar_bg(0, 4)
+end
+
+debug_machine = aliska.create_process_machine('Debug machine', {
+	src = 'item',
+	dst = 'item',
+	energy = 'item',
+	recipe_slots = {'src', 'dst'},
+})
+
+debug_machine:register_craft({src = {'a', 'b', 'c'}}, {dst = {'d'}})
+
+minetest.register_node('aliska_expansion:debug_machine', {
+	description = 'Debug machine',
+	tiles = {'aliska_grinder_side.png', 'aliska_bronze_block.png'},
+	groups = { cracky = 1 },
+	on_punch = function()
+		debug_machine:match_craft({src = {'a', 'b', 'c'}})
+	end,
+	after_place_node = function(pos)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+	
+		inv:set_size('src', 3)
+		inv:set_size('dst', 1)
+	
+		meta:set_string(
+			'formspec',
+			get_form()
+		)
+	end,
+})

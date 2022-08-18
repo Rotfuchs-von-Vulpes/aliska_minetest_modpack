@@ -79,7 +79,7 @@ end
 minetest.register_craft{
 	type = 'fuel',
 	recipe = 'aliska_foudation:coke',
-	burntime = 160,
+	burntime = 80,
 }
 minetest.register_craft{
 	type = 'fuel',

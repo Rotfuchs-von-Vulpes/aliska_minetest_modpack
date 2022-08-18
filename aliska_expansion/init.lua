@@ -1,4 +1,4 @@
-aliska.path = minetest.get_modpath('aliska_expanse')
+aliska.path = minetest.get_modpath('aliska_expansion')
 
 dofile(aliska.path..'/crafting_items.lua')
 dofile(aliska.path..'/machines.lua')

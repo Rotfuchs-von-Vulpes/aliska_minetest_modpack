@@ -1,4 +1,4 @@
-minetest.register_node('aliska_expanse:dynamo', {
+minetest.register_node('aliska_expansion:dynamo', {
 	description = 'Dynamo',
 	tiles = {'aliska_grinder_side.png'},
 	groups = { cracky = 1, aliska_receptor_kinetics = 1 },
@@ -9,7 +9,7 @@ minetest.register_node('aliska_expanse:dynamo', {
 		local above_pos = vector.add(pos, {x=0, y=1, z=0})
 		local node = minetest.get_node(above_pos)
 
-		if node.name == 'aliska_expanse:hand_crank' then
+		if node.name == 'aliska_expansion:hand_crank' then
 			local meta = minetest.get_meta(above_pos)
 
 			meta:set_int('is_rotable', 1)
@@ -19,7 +19,7 @@ minetest.register_node('aliska_expanse:dynamo', {
 		local above_pos = vector.add(pos, {x=0, y=1, z=0})
 		local node = minetest.get_node(above_pos)
 
-		if node.name == 'aliska_expanse:hand_crank' then
+		if node.name == 'aliska_expansion:hand_crank' then
 			local meta = minetest.get_meta(above_pos)
 
 			meta:set_int('is_rotable', 0)
