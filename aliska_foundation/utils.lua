@@ -19,6 +19,34 @@ function aliska.Map(keys, values)
 	return obj
 end
 
+function aliska.find_many_repeted(arrs)
+	if #arrs == 1 then
+		return arrs[1]
+	end
+	
+	local possibles_items
+	local finded_items = {}
+
+	local first_key = true
+	for _, arr in ipairs(arrs) do
+		if first_key then
+			first_key = false
+			possibles_items = arr
+		else
+			for i, item in ipairs(possibles_items) do
+				for _, item2 in ipairs(arr) do
+					if item == item2 then
+						table.insert(finded_items, item)
+						break
+					end
+				end
+			end
+		end
+	end
+
+	return finded_items
+end
+
 function aliska.find(arr, key)
 	for i, el in ipairs(arr) do
 		if el == key then

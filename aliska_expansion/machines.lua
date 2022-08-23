@@ -1,13 +1,3 @@
-function to_obj(arr)
-	local obj = {}
-
-	for _, key in ipairs(arr) do
-		obj[key] = {}
-	end
-
-	return obj
-end
-
 function separate(stack)
 	local arr = {}
 
@@ -16,25 +6,6 @@ function separate(stack)
 	end)
 
 	return arr
-end
-
-function Group(item)
-	local obj = {
-		arr = {},
-		set = {},
-		add = function(self, item)
-			if self.set[item] then
-				return
-			end
-
-			self.arr[#self.arr+1] = item
-			self.set[item] = true
-		end
-	}
-
-	if item then obj:add(item) end
-
-	return obj
 end
 
 aliska.machines_methods = {
@@ -67,6 +38,10 @@ function aliska.create_process_machine(name, def)
 		minetest.swap_node(pos, node)
 	end
 
+	for _, listname in ipairs(def.recipe_slots) do
+		machine.recipe_map[listname] = {}
+	end
+
 	function machine:register_craft(input, output, time)
 		time = time or def.default_time
 		idx = #self.recipes + 1
@@ -90,7 +65,6 @@ function aliska.create_process_machine(name, def)
 				end
 			end
 
-
 			self.recipes[idx][listname] = {items = items, count = count}
 		end
 
@@ -100,13 +74,66 @@ function aliska.create_process_machine(name, def)
 
 	function machine:match_craft(input)
 		local idxs = {}
+		local i = 1
+		
 		for listname, list in pairs(input) do
+			local is_empty = true
+
+			idxs[i] = {}
+
 			for _, item in ipairs(list) do
-				minetest.debug(item)
+				if item ~= '' then
+					is_empty = false
+
+					idxs[i][item] = {}
+
+					if not self.recipe_map[listname][item] then
+						return false
+					end
+
+					for _, idx in ipairs(self.recipe_map[listname][item]) do
+						table.insert(idxs[i][item], idx)
+					end
+				end
+			end
+
+			if is_empty then return false end
+
+			i = i + 1
+		end
+		
+		local possibles_idxs = {}
+		for _, list in ipairs(idxs) do
+			local arr_list = {}
+
+			for _, arr in pairs(list) do
+				table.insert(arr_list, arr)
+			end
+
+			table.insert(possibles_idxs, aliska.find_many_repeted(arr_list))
+		end
+
+		local final_idxs = aliska.find_many_repeted(possibles_idxs)
+
+		if #final_idxs > 1 then
+			return false
+		end
+
+		local final_idx = final_idxs[1]
+
+		local ingredients = self.recipes[final_idx]
+
+		for listname, list in pairs(ingredients) do
+			local ingredients_set = aliska.Set(input[listname])
+
+			for _, item in ipairs(list.items) do
+				if not ingredients_set[item] then
+					return false
+				end
 			end
 		end
 
-		return false
+		return self.outputs[final_idx]
 	end
 
 	machine.on_construct = def.on_construct
@@ -125,15 +152,29 @@ function aliska.create_process_machine(name, def)
 	end
 
 	function machine.inventory_interaction(pos)
-		minetest.get_node_timer(pos):start(1.0)
+		minetest.get_node_timer(pos):start(0.0)
 	end
 
 	function machine:get_node_timer()
 		return function(pos)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
+
+			local src_list_string = {}
+
+			local i = 1
+			for _, slot in ipairs(inv:get_list('src')) do
+				local str = slot:to_string()
+
+				if str ~= '' then
+					src_list_string[i] = str
+					i = i + 1
+				end
+			end
 			
-			minetest.debug(aliska.serialize(inv))
+			minetest.debug(aliska.serialize(
+				debug_machine:match_craft{src = src_list_string}
+			))
 
 			return false
 		end
@@ -402,15 +443,35 @@ debug_machine = aliska.create_process_machine('Debug machine', {
 	recipe_slots = {'src', 'dst'},
 })
 
-debug_machine:register_craft({src = {'a', 'b', 'c'}}, {dst = {'d'}})
+debug_machine:register_craft(
+	{src = {'aliska_foudation:copper_ingot 2', 'aliska_foudation:zinc_ingot'}},
+	{dst = {'aliska_foudation:brass_ingot 3'}}
+)
+debug_machine:register_craft(
+	{src = {'aliska_foudation:copper_ingot 3', 'aliska_foudation:tin_ingot'}},
+	{dst = {'aliska_foudation:bronze_ingot 4'}}
+)
+debug_machine:register_craft(
+	{src = {'aliska_foudation:silver_ingot', 'aliska_foudation:gold_ingot'}},
+	{dst = {'aliska_foudation:electrum_ingot 2'}}
+)
+debug_machine:register_craft(
+	{src = {'aliska_foudation:titanium_ingot', 'aliska_foudation:nickel_ingot'}},
+	{dst = {'aliska_foudation:nitinol_ingot 2'}}
+)
+debug_machine:register_craft(
+	{src = {'aliska_foudation:copper_ingot 3', 'aliska_foudation:nickel_ingot'}},
+	{dst = {'aliska_foudation:monel_ingot 4'}}
+)
+debug_machine:register_craft(
+	{src = {'aliska_foudation:iron_ingot 2', 'aliska_foudation:nickel_ingot'}},
+	{dst = {'aliska_foudation:invar_ingot 3'}}
+)
 
 minetest.register_node('aliska_expansion:debug_machine', {
 	description = 'Debug machine',
 	tiles = {'aliska_grinder_side.png', 'aliska_bronze_block.png'},
 	groups = { cracky = 1 },
-	on_punch = function()
-		debug_machine:match_craft({src = {'a', 'b', 'c'}})
-	end,
 	after_place_node = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -423,4 +484,8 @@ minetest.register_node('aliska_expansion:debug_machine', {
 			get_form()
 		)
 	end,
+	on_metadata_inventory_move = debug_machine.inventory_interaction,
+	on_metadata_inventory_put = debug_machine.inventory_interaction,
+	on_metadata_inventory_take = debug_machine.inventory_interaction,
+	on_timer = debug_machine:get_node_timer()
 })
